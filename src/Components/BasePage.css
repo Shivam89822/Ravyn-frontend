@@ -1,0 +1,34 @@
+#base-page-main-holder{
+    background-color: #000000;
+    min-height: 100vh;
+}
+
+#createPost-holder {
+  position: fixed;          /* relative to viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.main-home-page-holder{
+    display: flex;
+}
+
+.left-side{
+    width: 20%;
+}
+
+.center-right-side{
+    width: 80%;
+}
+.createPost-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

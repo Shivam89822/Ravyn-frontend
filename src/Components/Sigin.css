@@ -1,0 +1,92 @@
+.sign-in-form{
+    width: 300px;
+    /* width: 90%; */
+    background-image: linear-gradient(to bottom right, #1a2949, #000000);
+    color: white;
+    margin: auto;
+    border-radius: 20px;
+    padding: 10px;
+    
+}
+
+
+.headingHolder{
+    display: flex;
+    justify-content: space-between;
+}
+.headingHolder-Item{
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+.sigin-input-box{
+    display: flex;
+    justify-content: center;
+
+}
+.is-cross{
+    cursor: pointer;
+}
+.sigin-inputs{
+   margin-top: 18px;
+    width: 80%;
+    background-color: #242730;
+    border: 1px solid #4C4E51;
+    outline: none;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    border-radius: 12px;
+}
+.sigin-inputs:focus{
+    border: 1px solid #A855F7;
+}
+.create-btn{
+    color: white;
+    width: 80%;
+    padding: 10px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    transition: box-shadow transform 0.1s ease-in;
+}
+.create-btn:hover{
+    box-shadow: 2px 0px 20px #df4bab96;
+    transform: translateY(-2px);
+}
+
+.have-acc-text{
+    text-align: center;
+    margin: 20px;
+    font-size: 0.9rem;
+}
+
+.have-acc-text span{
+    color: #A472D8;
+    cursor: pointer;
+}
+.submit-error{
+    color: red;
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+button:disabled {
+  background-color: #cccccc; /* A light gray */
+  background-color: #666666;        /* A darker gray for text */
+  cursor: not-allowed;    /* Shows a "no" symbol on hover */
+  opacity: 0.7; 
+  transition: none;          /* Makes it look faded */
+}
+
+@media (min-width:500px){
+    .sign-in-form{
+        width: 400px;
+    }
+}

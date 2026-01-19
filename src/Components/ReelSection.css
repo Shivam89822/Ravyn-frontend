@@ -1,0 +1,198 @@
+/* Layout & Scroll Isolation */
+.vdp-reel-main-viewport {
+    background-color: #000;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.vdp-reel-scroll-engine {
+    width: 100%;
+    max-width: 420px; /* Force consistent Reel aspect ratio */
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    border-left: 1px solid #1a1a1a;
+    border-right: 1px solid #1a1a1a;
+    background: #000;
+    position: relative;
+}
+
+.vdp-reel-scroll-engine::-webkit-scrollbar {
+    display: none;
+}
+
+.vdp-reel-card-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    background: #0d0d0d;
+}
+
+.vdp-reel-video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Audio Control Button */
+.vdp-reel-volume-btn {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+}
+
+/* UI Overlay Container */
+.vdp-reel-ui-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none; /* Allows clicks to pass to video */
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 40%, transparent 80%, rgba(0,0,0,0.3) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+/* Sidebar Styling (Complex Names) */
+.vdp-reel-interactions-bar {
+    position: absolute;
+    right: 12px;
+    bottom: 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: center;
+    pointer-events: auto; /* Re-enable clicks for icons */
+    z-index: 20;
+}
+
+.vdp-reel-icon-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.vdp-reel-icon-box:active {
+    transform: scale(0.9);
+}
+
+.vdp-reel-stat-label {
+    color: white;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+/* Footer Metadata Styling */
+.vdp-reel-content-footer {
+    width: 85%;
+    color: white;
+    pointer-events: auto;
+    margin-bottom: 10px;
+    z-index: 20;
+}
+
+.vdp-reel-user-identity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.vdp-reel-avatar-wrapper {
+    padding: 2px;
+    background: linear-gradient(45deg, #a855f7, #ec4899, #22d3ee);
+    border-radius: 50%;
+    display: flex;
+}
+
+.vdp-reel-avatar-wrapper img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #000;
+}
+
+.vdp-reel-author-name {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+.vdp-reel-follow-chip {
+    background: transparent;
+    border: 1px solid #22d3ee;
+    color: #22d3ee;
+    padding: 3px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.vdp-reel-follow-chip:hover {
+    background: #22d3ee;
+    color: #000;
+}
+
+.vdp-reel-description {
+    font-size: 14px;
+    margin-bottom: 18px;
+    line-height: 1.4;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+.vdp-reel-audio-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    padding: 6px 15px;
+    border-radius: 30px;
+    width: fit-content;
+    max-width: 180px;
+    overflow: hidden;
+}
+
+.vdp-reel-marquee-track {
+    white-space: nowrap;
+    font-size: 12px;
+    animation: vdp-marquee-animation 10s linear infinite;
+}
+
+@keyframes vdp-marquee-animation {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.vdp-reel-loader {
+    color: #22d3ee;
+    text-align: center;
+    padding: 30px;
+    font-weight: bold;
+}

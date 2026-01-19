@@ -1,0 +1,21 @@
+.vdp-reel-main-viewport{
+   background-color: #000;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.vdp-reel-scroll-engine{
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    border-left: 1px solid #1a1a1a;
+    border-right: 1px solid #1a1a1a;
+    background: #000;
+    position: relative;
+}

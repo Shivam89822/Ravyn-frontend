@@ -1,0 +1,139 @@
+.icon-wrapper {
+  display: flex;
+  gap: 16px;
+}
+
+#search-navbar{
+    background-color: #0D0D0D;
+    width: 100%;
+    position: sticky;
+    top: 0px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.427);
+    
+    height: 60px;
+    z-index: 10;
+}
+
+.nav-items{
+  margin: 10px;
+}
+
+
+#main-search{
+  background-color: #1A1A1A;
+  border: 1px solid #262626;
+  outline: none;
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+  width: 300px;
+  /* margin: 8px; */
+  margin-left: 100px;
+}
+
+#main-search:focus{
+  border: 2px solid #06b6d4;
+}
+.icon-circle {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.icon-circle:hover {
+  background: #1a1a1a;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-guess-box{
+  position: absolute;
+}
+
+.search-guess{
+  /* border: 2px solid red; */
+  border-bottom: 1px solid rgba(128, 128, 128, 0.195);
+}
+
+.search-holder-box {
+  position: relative;
+}
+
+/* Dropdown box */
+.search-guess-box {
+  position: absolute;
+  top: 70px;
+  left: 100px;
+  width: 320px;
+  background: #111;
+  /* border: 1px solid #262626; */
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+/* Each user row */
+.search-guess {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.search-guess:hover {
+  background: #1a1a1a;
+}
+
+/* Profile circle */
+.is-profile-holder {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  
+}
+
+/* Text */
+.contain-name-user {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-above-info {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-below-info {
+  color: #9ca3af;
+  font-size: 12px;
+}

@@ -1,0 +1,517 @@
+
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+.sigin-holder-box {
+  /* This is the key for a "sticky" overlay */
+  position: fixed;
+
+  /* Your 90px requirement */
+  top: 90px; 
+
+  /* Add these two lines to center it horizontally */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  /* Keep these from your original code */
+  z-index: 100;
+  display: flex;
+  transform-origin: center;
+  animation-name: scaleInFromMiddle;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+
+  /* You can remove 'margin: auto' as it's not needed here */
+}
+
+@keyframes scaleInFromMiddle {
+  from {
+    /* Start invisible and scaled to 0 */
+    opacity: 0;
+    transform: translateX(-50%) scale(0);
+  }
+  to {
+    /* End fully visible and at full size */
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+#Intro-holder{
+    background-color: black;
+    overflow: hidden;
+    padding: 0px;
+    color: white;
+    display: block;
+    position: relative;
+}
+
+#intro-name{
+    margin: 20px;
+    text-align: center;
+    position: relative;  /* <-- ADD THIS LINE */
+    z-index: 10;
+}
+
+#amount-user-box{
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    width: 50%;
+    margin: auto;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    border-radius: 15px;
+    background-image: linear-gradient(to right, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));  
+   backdrop-filter: blur(4px);
+
+}
+#zap-class{
+    color: #facc15;
+    width: 15px;
+    /* margin-top: 10px; */
+    margin-right:5px;
+}
+#amount-user{
+    color: #9f95c6;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 2px; 
+}
+
+
+.Bolder-front-text{
+    font-size: 2.5rem;
+    font-weight:1000;
+}
+
+.first-bold-text{
+    color: transparent;
+  background-image: linear-gradient(to right, #c084fc, #f871b3, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.second-bold-text{
+  color: transparent;
+  background-image: linear-gradient(to right, #60a5fa, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.grey-intro-text{
+    color: grey;
+    font-size: 0.9rem;
+}
+
+.font-purple{
+    color: rgb(151, 130, 196);
+}
+
+.front-numbers{
+    display: flex;
+    justify-content: space-around;
+    
+}
+.number-holder{
+    font-weight: bolder;
+    font-size: 1.5rem;
+}
+.numbers-front-items{
+    margin: 10px;
+}
+
+.number-holder-des{
+    color: rgb(175, 174, 174);
+    margin-left: 5px;
+    font-family: 0.8rem;
+    font-size: 0.8rem;
+}
+
+.pink-theme-button{
+    background-image: linear-gradient(to right, #a855f7, #ec4899);
+}
+
+.grey-theme-button{
+    background-color: rgba(255, 255, 255, 0.1);
+   backdrop-filter: blur(4px);
+   -webkit-backdrop-filter: blur(4px);
+}
+.theme-button{
+    padding: 15px;
+    color: white;
+    font-size: 0.8rem;
+    border-radius: 35px;
+    font-weight: 600;
+    margin-right: 60px;
+    transition: transform 0.1s ease-in-out;
+    margin: 10px;
+}
+
+.theme-button:hover{
+    transform: translateY(-3px);
+}
+
+.front-flex-items{
+    display: flex;
+    margin: 10px;
+}
+
+.intro-name-item{
+    margin: 20px;  
+}
+
+
+.icon-box{
+    background-color: #22d3ee;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease-in-out;
+}
+
+.icon-box:hover{
+    transform: scale(1.1);
+}
+
+.icon-side-textbox{
+    margin-left: 8px;
+    font-weight: 600;
+
+}
+.front-flex-items-box{
+    
+    width: 400px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.light-item-part{
+    font-size: 0.9rem;
+    color: grey;
+}
+
+.first-color-theme-pink{
+    background-image: linear-gradient(to bottom right, #a855f7, #ec4899);
+}
+
+.sec-color-theme-blue{
+    background-image: linear-gradient(to bottom right, #3b82f6, #06b6d4);
+}
+
+.third-color-theme-orange{
+    background-image: linear-gradient(to bottom right, #f97316, #ef4444);
+}
+
+.fourth-color-theme-green{
+    background-image: linear-gradient(to bottom right, #22c55e, #10b981);
+}
+
+#phone-frame{
+    width: 300px;
+    height: 550px;
+    border: 7px solid #1F2937;
+    border-radius: 40px;
+    margin: auto;
+   margin-top: 50px;
+    background-color: black;
+     /* background-image: linear-gradient(to right, #a855f7, #ec4899); */
+     overflow: hidden;
+}
+
+#phone-notch{
+    background-color: #1F2937;
+    width: 120px;
+    height: 25px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin: auto;
+}
+
+#video-content-box{
+    position: relative;
+}
+
+.side-reel-buttons{
+    width: 50px;
+    height: 50px;
+    
+    border-radius: 50%;
+    background-color: rgba(103, 100, 100, 0.403);
+      
+}
+.side-reel-buttons-box:hover{
+    transform: scale(1.05);
+}
+
+.inner-reel-icon{
+    margin: 13px;
+    
+}
+
+
+.side-reel-buttons-box{
+    position: absolute;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.1s ease-in-out; 
+}
+.side-reel-buttons-box-first{
+    left: 240px;
+    top: 120px; 
+}
+.side-reel-buttons-box-sec{
+    left: 240px;
+    top: 200px; 
+}
+.side-reel-buttons-box-third{
+    left: 240px;
+    top: 280px; 
+}
+.side-reel-buttons-box-fourth{
+    left: 240px;
+    top: 360px; 
+}
+
+.number-of-actions{
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-top: 4px;
+    
+}
+
+.profile-holder-box{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+     background-image: linear-gradient(to bottom right, #a855f7, #ec4899);
+
+}
+
+.user-info-box{
+    position: absolute;
+    top: 430px;
+    left: 30px;
+}
+
+.user-prof-name-follow-holder{
+    display: flex;
+    justify-content: space-between;
+    
+
+}
+
+.first-flex-prof-holder{
+    display: flex;
+}
+
+.user-prof-name{
+    margin-top: 10px;
+    margin-left: 4px;
+   font-weight: 700;
+}
+
+.user-prof-follow{
+     margin-top: 4px;
+    margin-left: 4px;
+
+}
+
+.follow-btn{
+    background-color: rgba(0, 0, 0, 0.121);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.444);
+    border-radius: 20px;
+    padding: 6px;
+    width: 100px;
+    margin-top: 2px;
+    font-size: 1.rem;
+    font-weight: 700;
+    margin-left: 8px;
+}
+
+.caption-holder{
+    margin: 5px;
+    font-weight: 700;
+}
+
+.amount-of-views{
+    margin: 5px;
+    color: rgb(209, 207, 207);
+    font-size: 0.9rem;
+}
+
+
+.blob{
+      position: absolute;
+      border-radius: 9999px; /* This is Tailwind's 'rounded-full' */
+      filter: blur(64px); /* This is Tailwind's 'blur-3xl' */
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.blob-1 {
+      top: 5rem; /* 20 * 0.25rem = 5rem */
+      left: 2.5rem; /* 10 * 0.25rem = 2.5rem */
+      width: 18rem; /* 72 * 0.25rem = 18rem */
+      height: 18rem;
+      /* bg-purple-500/30: rgba(168, 85, 247, 0.3) */
+      background-color: rgba(168, 85, 247, 0.3);
+}
+
+ @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+}
+
+.blob-2 {
+      bottom: 5rem;
+      right: 2.5rem;
+      width: 24rem; 
+      height: 24rem;
+     
+      background-color: rgba(236, 72, 153, 0.2);
+      animation-delay: 1s; 
+    }
+
+   
+    .blob-3 {
+      top: 50%;
+      left: 50%;
+      width: 20rem; 
+      height: 20rem;
+      
+      background-color: rgba(59, 130, 246, 0.2);
+      animation-delay: 0.5s;
+
+    }
+
+
+
+
+
+/* ******************************************************************** */
+
+
+
+
+
+
+
+@media (min-width:500px){
+
+
+
+.Bolder-front-text{
+    font-size: 4.5rem;
+}
+
+.grey-intro-text{
+    font-size: 1.2rem;
+}
+
+.number-holder{
+
+    font-size: 2.4rem;
+}
+
+
+.theme-button{
+    font-size: 1rem;
+}
+
+.front-flex-items-box{
+    display: flex;
+}
+
+.light-item-part{
+    font-size: 0.9rem;
+}
+
+
+#phone-frame{
+    width: 320px;
+    height: 650px;
+}
+
+
+.side-reel-buttons{
+    width: 50px;
+    height: 50px;
+    
+    border-radius: 50%;
+    background-color: rgba(103, 100, 100, 0.403);
+      
+}
+
+
+.side-reel-buttons-box-first{
+    left: 250px;
+    top: 200px; 
+}
+.side-reel-buttons-box-sec{
+    left: 250px;
+    top: 280px; 
+}
+.side-reel-buttons-box-third{
+    left: 250px;
+    top: 360px; 
+}
+.side-reel-buttons-box-fourth{
+    left: 250px;
+    top: 440px; 
+}
+
+
+.user-info-box{
+    top: 520px;
+    left: 30px;
+}
+
+}
+
+
+
+
+    /* ***************************************************************************************** */
+
+
+
+
+@media (min-width: 880px) {
+
+#Intro-holder{
+    display: flex;
+    justify-content: center;
+}
+#intro-name{
+    text-align:left;
+}
+#amount-user-box{
+    margin: 10px;
+}
+.front-numbers{
+   
+    justify-content: left;
+}
+.front-flex-items-box{
+    margin: 0px;
+}
+
+
+#phone-frame{
+   
+    margin: 50px;
+   
+}
+
+}

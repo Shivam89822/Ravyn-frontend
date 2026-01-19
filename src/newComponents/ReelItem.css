@@ -1,0 +1,194 @@
+.vdp-reel-card-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+/* Video */
+.vdp-reel-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Volume Button */
+.vdp-reel-volume-btn {
+  position: absolute;
+  top: 20px;
+  right: 18px;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Tap hint */
+.vdp-reel-tap-hint {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  font-size: 12px;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 10px;
+  border-radius: 20px;
+  z-index: 90;
+}
+
+/* Overlay */
+.vdp-reel-ui-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* ✅ THIS IS THE KEY */
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.9) 0%,
+    transparent 40%,
+    transparent 70%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+
+.vdp-reel-interactions-bar,
+.vdp-reel-content-footer,
+.vdp-reel-volume-btn {
+  pointer-events: auto;
+}
+
+/* Right bar */
+.vdp-reel-interactions-bar {
+  position: absolute;
+  right: 12px;
+  bottom: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+}
+
+.vdp-reel-icon-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.vdp-reel-stat-label {
+  font-size: 12px;
+  color: white;
+  margin-top: 4px;
+}
+
+/* Footer */
+.vdp-reel-content-footer {
+  width: 85%;
+  color: white;
+}
+
+.vdp-reel-user-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.vdp-reel-avatar-wrapper {
+  /* padding: 2px; */
+  background: linear-gradient(45deg, #a855f7, #ec4899, #22d3ee);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+   position: relative;
+  border-radius: 50%;
+  padding: 2px; /* thickness of border */
+  background: linear-gradient(45deg, #a855f7, #ec4899, #22d3ee);
+}
+
+.vdp-reel-avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+
+}
+
+.vdp-reel-author-name {
+  font-weight: 700;
+}
+
+.vdp-reel-follow-chip {
+  background: transparent;
+  border: 1px solid #22d3ee;
+  color: #22d3ee;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.vdp-reel-description {
+  font-size: 14px;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+/* Audio */
+.vdp-reel-audio-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 6px 14px;
+  border-radius: 30px;
+  width: fit-content;
+  overflow: hidden;
+}
+
+.vdp-reel-marquee-track {
+  white-space: nowrap;
+  font-size: 12px;
+  animation: marquee 10s linear infinite;
+}
+
+.comment-holder {
+  position: fixed;
+  inset: 0;                 /* ✅ MUST be here */
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+  overscroll-behavior: contain;
+  touch-action: none;
+
+  display: flex;
+  justify-content:flex-end;
+  align-items: center;
+}
+
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Image reel support */
+.vdp-reel-image-element {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: black;
+}
+

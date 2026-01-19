@@ -1,0 +1,111 @@
+
+.feed-superior-box{
+    background-color: rgba(128, 128, 128, 0.136);
+    min-height: 100vh;
+    color: white;
+    display: flex;
+    
+}
+
+.main-post-container{
+    background-color: #000000;
+    width: 65%;
+}
+
+.post-card-holder-box{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-follow-suggestions{
+   
+    width: 35%;
+    background-color: #000000;
+    padding: 40px;
+
+}
+
+.suggestion-box{
+    width: 100%;
+    border: 1px solid #1A1A1A;
+    border-radius: 10px;
+    position: sticky;
+    top: 120px;
+    background-color: #0D0D0D;
+    
+}
+
+.suggest-message{
+    margin: 20px;
+    color: #9CA3AF;
+    font-weight: 600;
+}
+
+.follow-suggestion-item{
+    display: flex;
+    gap: 10px;
+    margin: 20px;
+}
+
+.prof-holder-circle{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22d3ee, #a855f7);
+}
+
+.follow-btn{
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+            border: none;
+            padding: 6px 6px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+}
+
+.followed-by-text{
+    font-size: small;
+    color: grey;
+}
+
+.status-box{
+    width: 100%;
+  
+    display: flex;
+    padding: 15px;
+    /* justify-content: space-between; */
+    border-bottom: 1px solid rgba(128, 128, 128, 0.427);
+}
+
+
+.status-item-box{
+    display: flex;
+    justify-content: center;
+    
+    align-items: center;
+    margin: 15px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid linear-gradient(135deg, #a855f7, #ec4899);
+    border-radius: 50%;
+    background-color: #1A1A1A;
+    border: 3px solid transparent;
+    background:
+        linear-gradient(#0f0f0f, #0f0f0f) padding-box,
+        linear-gradient(135deg, #a855f7, #ec4899) border-box;
+}
+
+
+.story-name{
+    font-size: small;
+    color: grey;
+    text-align: center;
+    
+}
+

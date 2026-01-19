@@ -1,0 +1,245 @@
+.main-user-pro-holder{
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+     border: 5px solid transparent;
+    
+
+    background:   
+    linear-gradient(#1A1A1A, #1A1A1A) padding-box,
+    linear-gradient(to right, #a855f7, #ec4899) border-box;
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main-user-pro-holder img{
+    width: 100%;
+    overflow: hidden;
+}
+
+#lucide-user{
+    color: gray;
+}
+
+.main-prof-divider-box{
+    display: flex;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
+    /* justify-content: center; */
+}
+
+.sec-item-box{
+    width: 35%;
+}
+
+.main-divider-item{
+    margin-left: 80px;
+    margin-top: 50px;
+}
+
+.name-follow-msg-holder{
+    display: flex;
+    justify-content: space-between;
+}
+
+.name-follow-item{
+   
+}
+
+.btn-design{
+
+    font-weight: 700;
+    font-size: medium;
+    padding: 10px;
+    /* background-image: linear-gradient(to right, #a855f7, #ec4899); */
+    color: white;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: none;
+ 
+}
+.only-color-change1{
+    background-image: linear-gradient(to right, #a855f7, #ec4899);
+}
+.username-actual{
+    font-size: 1.2rem;
+}
+.only-color-change2{
+    background-color: #262626;
+    font-weight: 600;
+}
+.attributes-imp{
+    color: grey;
+}
+
+.post-follower-holder{
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.fullName-holder{
+    margin-top: 20px;
+    font-weight: 700;
+}
+
+.bio-holder{
+    margin-top: 20px;
+    font-size: small;
+    font-weight: 600;
+
+}
+
+.cirlcle-higlight-holder{
+    width: 80px;
+    height: 80px;
+    background-color: #1A1A1A;
+    border-radius: 50%;
+    border: 2px solid #262626;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.main-hight-box{
+    display: flex;
+    text-align: center;
+    color: grey;
+    justify-content: left;
+    padding-left: 80px;
+    font-size: small;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
+    
+    
+}
+.highlight-name{
+    margin: 5px;
+}
+.highlight-name-box{
+    margin: 20px;
+}
+.division-items{
+    margin: 10px;
+    color: grey;
+    cursor: pointer;
+    
+}
+.underline{
+    background-color: #22d3ee;
+    height: 1px;
+    width: 60px;
+}
+
+.post-have-division{
+    display: flex;
+    justify-content:space-evenly;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
+
+}
+
+.parent-post-holder{
+    display: flex;
+    margin-left: 80px;
+    flex-wrap: wrap;
+}
+
+.post-item{
+    width: 200px;
+    height: 300px;
+    background-color: rgba(128, 128, 128, 0.426);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    border-radius: 2px;
+}
+
+.postImage{
+    width: 100%;
+}
+
+/* REQUIRED for hover overlay */
+.post-item {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover overlay like Instagram */
+.post-hover-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.post-item:hover .post-hover-overlay {
+    opacity: 1;
+}
+
+.post-hover-overlay span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+}
+
+/* Active tab underline */
+.active-tab {
+    border-bottom: 2px solid white;
+}
+ 
+/* REQUIRED for overlay */
+.post-item {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover overlay */
+.post-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.post-item:hover .post-hover-overlay {
+  opacity: 1;
+}
+
+.post-hover-overlay span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+/* Active tab underline */
+.active-tab {
+  border-bottom: 2px solid white;
+}
+
+/* Empty state text */
+.empty-text {
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  margin-top: 60px;
+}
