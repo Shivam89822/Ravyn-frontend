@@ -1,9 +1,11 @@
 import React from 'react'
 import "./MessageSection.css"
 import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 function MessageItem({post,activeUser}) {
     const user = useSelector((state) => state.user.user);
+    const navigate=useNavigate()
     
      const formatMessageTime = (date) => {
     const msgDate = new Date(date);
@@ -43,7 +45,7 @@ function MessageItem({post,activeUser}) {
                 </div>
               </div>):(
                 post.type=="image"?
-                (<div  className="whole-msg-container">
+                (<div onClick={()=>{navigate("/home/reels",{state:post.mediaMeta.publicId})}}  className="whole-msg-container">
                 <div className="chat-msg reel-right">
                   <div className="reelCard-msg">
                     <div className="reelCard-first">
@@ -59,7 +61,7 @@ function MessageItem({post,activeUser}) {
 
                 </div>
                 </div>):(
-                  <div  className="whole-msg-container">
+                  <div onClick={()=>{navigate("/home/reels",{state:post.mediaMeta.publicId})}}  className="whole-msg-container">
                 <div className="chat-msg reel-right">
                    <div className="reelCard-msg">
                     <div className="reelCard-first">
@@ -91,7 +93,7 @@ function MessageItem({post,activeUser}) {
                 </div>
               </div>):(
                 post.type=="image"?(
-                  <div  className="whole-msg-container">
+                  <div onClick={()=>{navigate("/home/reels",{state:post.mediaMeta.publicId})}}  className="whole-msg-container">
                 <div className="chat-msg reel-left">
                   <div className="reelCard-msg">
                     <div className="reelCard-first">
@@ -108,7 +110,7 @@ function MessageItem({post,activeUser}) {
                 </div>
                 </div>
                 ):(
-                  <div  className="whole-msg-container">
+                  <div onClick={()=>{navigate("/home/reels",{state:post.mediaMeta.publicId})}}  className="whole-msg-container">
                 <div className="chat-msg reel-left">
                    <div className="reelCard-msg">
                     <div className="reelCard-first">
