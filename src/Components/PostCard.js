@@ -10,6 +10,29 @@ function PostCard({currPost, post,setShareBox }) {
   const [isLikes,setIsLike]=useState(post.isLiked);
   const [likeCount,setLikeCount]=useState(post.likeCount);
   const [isSaved,setIsSaved]=useState(post.isSaved);
+
+   const formatMessageTime = (date) => {
+    const msgDate = new Date(date);
+    const now = new Date();
+
+    const time = msgDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const isToday = msgDate.toDateString() === now.toDateString();
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday =
+      msgDate.toDateString() === yesterday.toDateString();
+
+    if (isToday) return `today ${time}`;
+    if (isYesterday) return `yesterday ${time}`;
+
+    return `${msgDate
+      .toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
+      .toLowerCase()} ${time}`;
+  };
  
   const handleVideoClick = () => {
     if (!videoRef.current) return;
@@ -24,13 +47,14 @@ function PostCard({currPost, post,setShareBox }) {
   };
 
   const likePost=async()=>{
+    setIsLike(true)
+      setLikeCount(likeCount+1);
     try{
       await axios.post("http://localhost:8080/api/post/like",{
         userId:user._id,
         postId:post._id
       })
-      setIsLike(true)
-      setLikeCount(likeCount+1);
+      
     
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
@@ -66,13 +90,14 @@ function PostCard({currPost, post,setShareBox }) {
 
 
   const unlikePost=async()=>{
+    setIsLike(false)
+      setLikeCount(likeCount-1);
     try{
       await axios.post("http://localhost:8080/api/post/unlike",{
         userId:user._id,
         postId:post._id
       })
-      setIsLike(false)
-      setLikeCount(likeCount-1);
+      
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
     }
@@ -90,7 +115,7 @@ function PostCard({currPost, post,setShareBox }) {
 
         <div className="name-time-holder first-items">
           <div>{post?.userId?.userName}</div>
-          <div className="post-time">2 hour ago</div>
+          <div className="post-time">{formatMessageTime(post?.createdAt)}</div>
         </div>
       </div>
 

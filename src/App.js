@@ -30,6 +30,8 @@ import EditProfile from "./newComponents/EditProfile";
 import SearchTab from "./newComponents/SearchTab";
 import PreviewStatus from "./newComponents/PreviewStatus";
 import StatusElement from "./newComponents/StatusElement";
+import Setting from "./newComponents/SettingsPage";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -142,6 +144,7 @@ function App() {
             <Route path="reels" element={<ReelSection />} />
             <Route path="search" element={<SearchTab />} />
             <Route path="status" element={<PreviewStatus />} />
+            <Route path="settings" element={<Setting/>}/>
           </Route>
 
           <Route path="/status/:username" element={<StatusElement />} />

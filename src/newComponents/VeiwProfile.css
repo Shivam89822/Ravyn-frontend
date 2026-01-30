@@ -2,6 +2,7 @@
 .user-profile-container{
     padding: 60px;
     color: white;
+    padding-bottom: 70px;
 }
 
 .user-profile-upper-container{
@@ -27,7 +28,7 @@
   height: 100%;
   border-radius: 50%;
   padding: 6px;
-  background: linear-gradient(135deg, #a855f7, #ec4899, #38bdf8);
+  background: linear-gradient(to bottom right, #2563eb, #9333ea);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +76,7 @@
     padding: 10px;
     border: none;
     outline: none;
-  background: linear-gradient(135deg, #a855f7, #ec4899, #38bdf8);
+  background: linear-gradient(to bottom right, #2563eb, #9333ea);
   width: 100%;
   /* margin: 10px; */
   color: 10%;
@@ -84,6 +85,11 @@
   font-size: 1rem;
   font-weight: 700;
 
+}
+
+.post-item{
+  width: 200px;
+  margin: 10px;
 }
 
 .upper-prof-first-item{
@@ -132,7 +138,7 @@
 }
 
 .count-box{
-    background: linear-gradient(135deg, #a855f7, #ec4899, #38bdf8);
+    background: linear-gradient(to bottom right, #2563eb, #9333ea);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 1.8rem;
@@ -195,4 +201,134 @@
 
 .post-reel-save-btn span{
   margin: 5px;
+}
+
+
+@media (max-width: 1024px) {
+  .user-profile-container {
+    padding: 30px;
+  }
+
+  .user-profile-upper-container {
+    gap: 40px;
+    padding: 30px;
+  }
+
+  .profile-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  .edit-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .user-name {
+    font-size: 1.8rem;
+  }
+
+  .stats-container {
+    flex-wrap: wrap;
+  }
+
+  .stats-holder {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-profile-container {
+    padding: 20px;
+  }
+
+  .user-profile-upper-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+    padding: 25px;
+  }
+
+  .upper-prof-first-item {
+    align-items: center;
+    gap: 25px;
+  }
+
+  .upper-prof-sec-item {
+    align-items: center;
+  }
+
+  .stats-container {
+    justify-content: center;
+  }
+
+  .stats-holder {
+    margin: 6px;
+    padding: 15px;
+  }
+
+  .userProfile-lower-container {
+    margin-top: 25px;
+  }
+
+  .post-reel-save-btn {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-profile-container {
+    padding-bottom: 70px;
+  }
+
+  .profile-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .edit-btn {
+    width: 44px;
+    height: 44px;
+    bottom: 6px;
+    right: 6px;
+  }
+
+  .user-name {
+    font-size: 1.4rem;
+  }
+
+  .bio {
+    font-size: 0.9rem;
+  }
+
+  .count-box {
+    font-size: 1.4rem;
+  }
+
+  .right-of-count {
+    font-size: 0.75rem;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  .post-reel-save-btn span {
+    display: none;
+  }
+  .parent-post-holder{
+    margin-left: 0px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+  }
+
+  .post-item{
+    width: 100%;
+    margin: 0px;
+   
+  }
 }

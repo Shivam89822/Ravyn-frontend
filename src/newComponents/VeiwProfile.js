@@ -12,7 +12,7 @@ function VeiwProfile() {
   const navigate=useNavigate();  
 
   const [activeStyle,setActiveStyle]=useState({
-    background:"linear-gradient(135deg, #a855f7, #ec4899, #38bdf8)",
+    background:"linear-gradient(to bottom right, #2563eb, #9333ea)",
     color:"white",
     borderRadius:"10px",
     transition: "background 0.4s ease, color 0.4s ease, transform 0.4s ease",

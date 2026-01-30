@@ -1,6 +1,6 @@
 
 .feed-superior-box{
-    background-color: rgba(128, 128, 128, 0.136);
+    background-color: #101826;
     min-height: 100vh;
     color: white;
     display: flex;
@@ -8,7 +8,7 @@
 }
 
 .main-post-container{
-    background-color: #000000;
+    /* background-color: #101826; */
     width: 65%;
 }
 
@@ -23,7 +23,7 @@
 .side-follow-suggestions{
    
     width: 35%;
-    background-color: #000000;
+    /* background-color: #000000; */
     padding: 40px;
 
 }
@@ -34,7 +34,7 @@
     border-radius: 10px;
     position: sticky;
     top: 120px;
-    background-color: #0D0D0D;
+    background-color: #090E1A;
     
 }
 
@@ -48,6 +48,9 @@
     display: flex;
     gap: 10px;
     margin: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
 }
 
 .prof-holder-circle{
@@ -58,7 +61,7 @@
 }
 
 .follow-btn{
-      background: linear-gradient(135deg, #a855f7, #ec4899);
+      background: linear-gradient(to bottom right, #2563eb, #9333ea);
             border: none;
             padding: 6px 6px;
             border-radius: 8px;
@@ -92,13 +95,13 @@
     margin: 15px;
     width: 70px;
     height: 70px;
-    border: 2px solid linear-gradient(135deg, #a855f7, #ec4899);
+    border: 2px solid linear-gradient(135deg, #2563eb, #9333ea);
     border-radius: 50%;
     background-color: #1A1A1A;
     border: 3px solid transparent;
     background:
         linear-gradient(#0f0f0f, #0f0f0f) padding-box,
-        linear-gradient(135deg, #a855f7, #ec4899) border-box;
+        linear-gradient(to bottom right, #2563eb, #9333ea);
 }
 
 
@@ -109,3 +112,24 @@
     
 }
 
+/* ================= MOBILE / TABLET ================= */
+
+@media (max-width: 900px) {
+  
+  .side-follow-suggestions {
+    display: none;
+  }
+
+  .main-post-container {
+    width: 100%;
+  }
+
+
+  .post-card-holder-box {
+    align-items: center;
+  }
+
+  .feed-superior-box {
+    padding: 0;
+  }
+}

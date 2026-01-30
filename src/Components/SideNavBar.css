@@ -1,6 +1,6 @@
 .sidebar{
     color: #9BA2AE;
-    background-color: #0D0D0D;
+    background-color: #090E1A;
     width: 100%;
     height: 100vh;
     padding: 20px;
@@ -16,7 +16,8 @@
 .logo{
     font-size: 1.8rem;
     font-weight: 700;
-    background: linear-gradient(to right, #a855f7, #ec4899, #22d3ee);
+  background: linear-gradient(to bottom right, #2563eb, #9333ea);
+    
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -61,7 +62,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(to right, #a855f7, #ec4899, #22d3ee);
+    /* background: linear-gradient(to right, #a855f7, #ec4899, #22d3ee); */
+  background: linear-gradient(to bottom right, #2563eb, #9333ea);
+
 }
 
 /* PROFILE SECTION */
@@ -72,15 +75,21 @@
 }
 
 
-.active{
+.active {
+    /* Subtle background with a hint of the theme colors */
     background: linear-gradient(
         135deg,
-        rgba(168, 85, 247, 0.15),
-        rgba(236, 72, 153, 0.15)
+        rgba(37, 99, 235, 0.1),
+        rgba(147, 51, 234, 0.1)
     );
     color: #ffffff;
-    border-left: 3px solid #a855f7;
+    /* High contrast border using the blue from your theme */
+    border-left: 3px solid #2563eb;
     border-radius: 10px;
+    /* Adding a subtle outer glow to the border */
+    box-shadow: -4px 0 15px -3px rgba(37, 99, 235, 0.3);
+    /* Smooth transition for the hover effect */
+    transition: all 0.3s ease;
 }
 
 /* ACTIVE ICON COLOR */
@@ -90,7 +99,8 @@
 
 /* CREATE POST BUTTON */
 .create-special{
-    background-image: linear-gradient(to right, #a855f7, #ec4899);
+   background: linear-gradient(to bottom right, #2563eb, #9333ea);
+   
     color: white;
     border-radius: 8px;
     padding: 6px;
@@ -186,7 +196,9 @@
 
 .notify-text{
 border-bottom: 1px solid rgba(128, 128, 128, 0.322);
-    background-image: linear-gradient(to right, #a855f7, #ec4899);
+    
+  background: linear-gradient(to bottom right, #2563eb, #9333ea);
+
     /* border-bottom-right-radius: 10px; */
     border-top-right-radius: 10px;
     position: sticky;

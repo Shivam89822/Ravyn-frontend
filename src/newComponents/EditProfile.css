@@ -109,7 +109,7 @@
 .modal-title {
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(to right, #a855f7, #ec4899, #22d3ee);
+   background: linear-gradient(135deg, #6366f1, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -182,7 +182,7 @@
   padding: 5px;
   cursor: pointer;
 
-  background: linear-gradient(135deg, #a855f7, #ec4899, #22d3ee);
+   background: linear-gradient(135deg, #6366f1, #3b82f6);
   transition: all 0.3s ease;
 }
 
@@ -243,7 +243,7 @@
 }
 
 .avatar-btn.primary {
-  background: linear-gradient(135deg, #a855f7, #ec4899);
+   background: linear-gradient(135deg, #6366f1, #3b82f6);
   color: #fff;
 }
 
@@ -391,7 +391,7 @@
 }
 
 .switch input:checked + .slider {
-  background: linear-gradient(135deg, #a855f7, #ec4899);
+   background: linear-gradient(135deg, #6366f1, #3b82f6);
 }
 
 .switch input:checked + .slider::before {
@@ -424,7 +424,7 @@
 }
 
 .footer-btn.save {
-  background: linear-gradient(135deg, #a855f7, #ec4899);
+   background: linear-gradient(135deg, #6366f1, #3b82f6);
   color: #fff;
 }
 

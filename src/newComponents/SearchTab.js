@@ -13,6 +13,7 @@ import {
   Heart,
   MessageCircle,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 function SearchTab() {
   const [isLoading,setIsLoading]=useState(false)
   const [post, setPost] = useState([]);
@@ -20,6 +21,7 @@ function SearchTab() {
   const [hasMore,setHashMore]=useState(true);
   const bottomRef=useRef(null)
   const fetchedOnce = useRef(false);
+  const navigate=useNavigate();
   const fetchReels = async () => {
     if (isLoading || !hasMore) return;
     setIsLoading(true);
@@ -75,7 +77,7 @@ useEffect(() => {
     <div className="main-reel-holder">  
       {post.map((item, index) => {
         return item.type =="video" ? (
-          <div key={index} className="post-item">
+          <div onClick={()=>{navigate("/home/reels",{state:item.postId})}} key={index} className="post-item">
             <video
               className="postImage"
               src={item.mediaUrl}
@@ -93,7 +95,7 @@ useEffect(() => {
             </div>
           </div>
         ) : (
-          <div key={index} className="post-item">
+          <div onClick={()=>{navigate("/home/reels",{state:item._id})}} key={index} className="post-item">
             <img className="postImage" src={item.mediaUrl} alt="post" />
             <div className="post-hover-overlay">
               <span>

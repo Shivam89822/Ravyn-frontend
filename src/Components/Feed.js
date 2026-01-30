@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import "./Feed.css";
 import PostCard from "./PostCard";
@@ -9,8 +10,10 @@ import { Plus } from "lucide-react";
 import ShareBox from "../newComponents/ShareBox";
 import PreviewStatus from "../newComponents/PreviewStatus";
 import { useNavigate } from "react-router-dom";
+import { hideBottomNav, showBottomNav } from "../features/user/UiSlice";
 function Feed() {
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
   const [currPost,setCurrPost]=useState(null)
   const [feed, setFeed] = useState([]);
   const [cursorTime, setCursorTime] = useState(null);
@@ -21,6 +24,9 @@ function Feed() {
   const [status,setStatus]=useState([])
   const statusFileRef=useRef(null);
   const navigate=useNavigate();
+  const [viralCursor, setViralCursor] = useState(null);
+  const [hasMoreViral,setHasMoreViral]=useState(true);
+  
 
   const bottomRef = useRef(null);
   const observerRef = useRef(null);
@@ -41,6 +47,17 @@ function Feed() {
       console.log(e.response?.data?.message||"Backend error");
     }
   }
+
+  useEffect(() => {
+  if (currPost) {
+    dispatch(hideBottomNav());
+  } else {
+    dispatch(showBottomNav());
+  }
+
+  return () => dispatch(showBottomNav());
+}, [currPost]);
+
 
 
 
@@ -82,6 +99,32 @@ function Feed() {
     }
   };
 
+  const fetchViralFeed=async()=>{
+    if (!user || loader || !hasMoreViral) return; 
+
+    setLoader(true);
+    try{
+      const response =await axios.get("http://localhost:8080/api/post/fetchviralreel",{params:{viralCursor:viralCursor}});
+      const { reels, nextCursor } = response.data;
+      if (!reels || reels.length < 3) {
+      
+        setHasMoreViral(false);
+        return;
+      }
+      setFeed(prev => {
+        const existingIds = new Set(prev.map(p => p._id));
+        const uniqueNewPosts = reels.filter(p => !existingIds.has(p._id));
+        return [...prev, ...uniqueNewPosts];
+      });
+      setViralCursor(nextCursor);
+
+    }catch(e){
+      console.log(e.response?.data?.message);
+    }finally{
+      setLoader(false)
+    }
+  }
+
   useEffect(() => {
     if (user) {
       setFeed([]);
@@ -92,30 +135,35 @@ function Feed() {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (!bottomRef.current || !user || !hasMore) return;
+ useEffect(() => {
+  if (!bottomRef.current || !user) return;
 
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+  if (observerRef.current) {
+    observerRef.current.disconnect();
+  }
 
-    observerRef.current = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !loader) {
+  observerRef.current = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && !loader&&hasMoreViral) {
+        if (hasMore) {
           fetchFeed();
+        } else if (hasMoreViral) {
+          fetchViralFeed();
         }
-      },
-      {
-        root: null,
-        rootMargin: "200px",
-        threshold: 0
       }
-    );
+    },
+    {
+      root: null,
+      rootMargin: "200px",
+      threshold: 0
+    }
+  );
 
-    observerRef.current.observe(bottomRef.current);
+  observerRef.current.observe(bottomRef.current);
 
-    return () => observerRef.current?.disconnect();
-  }, [cursorTime, user, hasMore, loader]);
+  return () => observerRef.current?.disconnect();
+}, [user, hasMore, hasMoreViral, loader]);
+
 
   return (
     <div className="feed-superior-box">
@@ -159,7 +207,7 @@ function Feed() {
             
           {loader && <FeedLoader />}
 
-          {hasMore && <div ref={bottomRef} style={{ height: "1px" }} />}
+          {(hasMore || hasMoreViral) && <div ref={bottomRef} style={{ height: "1px" }} />}
 
         </div>
       </div>

@@ -127,7 +127,7 @@ const unfollowUser=async()=>{
   const reelPosts = userPosts.filter((p) => p.type === "video");
 
   return (
-    <div style={{ color: "white" }}>
+    <div className="main-user-prof-box" style={{ color: "white" }}>
       {/* ===== PROFILE HEADER ===== */}
       <div className="main-prof-divider-box">
         <div className="main-divider-item">

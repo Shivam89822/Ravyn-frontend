@@ -1,245 +1,248 @@
-.main-user-pro-holder{
+/* --- CONTAINER & WRAPPERS --- */
+.main-prof-divider-box {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
+    gap: 40px;
+    margin-left: 50px;
+}
+
+.main-divider-item {
+    margin: 0; /* Removed fixed 80px margin */
+}
+
+/* --- PROFILE IMAGE --- */
+.main-user-pro-holder {
     width: 150px;
     height: 150px;
-
     border-radius: 50%;
-     border: 5px solid transparent;
-    
-
-    background:   
-    linear-gradient(#1A1A1A, #1A1A1A) padding-box,
-    linear-gradient(to right, #a855f7, #ec4899) border-box;
-   
+    border: 5px solid transparent;
+    background: linear-gradient(#1A1A1A, #1A1A1A) padding-box,
+                linear-gradient(135deg, #6366f1, #3b82f6) border-box;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 }
-.main-user-pro-holder img{
+
+.main-user-pro-holder img {
     width: 100%;
-    overflow: hidden;
-}
-
-#lucide-user{
-    color: gray;
-}
-
-.main-prof-divider-box{
-    display: flex;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
-    /* justify-content: center; */
-}
-
-.sec-item-box{
-    width: 35%;
-}
-
-.main-divider-item{
-    margin-left: 80px;
-    margin-top: 50px;
-}
-
-.name-follow-msg-holder{
-    display: flex;
-    justify-content: space-between;
-}
-
-.name-follow-item{
-   
-}
-
-.btn-design{
-
-    font-weight: 700;
-    font-size: medium;
-    padding: 10px;
-    /* background-image: linear-gradient(to right, #a855f7, #ec4899); */
-    color: white;
-    border-radius: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border: none;
- 
-}
-.only-color-change1{
-    background-image: linear-gradient(to right, #a855f7, #ec4899);
-}
-.username-actual{
-    font-size: 1.2rem;
-}
-.only-color-change2{
-    background-color: #262626;
-    font-weight: 600;
-}
-.attributes-imp{
-    color: grey;
-}
-
-.post-follower-holder{
-    display: flex;
-    margin-top: 20px;
-    justify-content: space-between;
-}
-
-.fullName-holder{
-    margin-top: 20px;
-    font-weight: 700;
-}
-
-.bio-holder{
-    margin-top: 20px;
-    font-size: small;
-    font-weight: 600;
-
-}
-
-.cirlcle-higlight-holder{
-    width: 80px;
-    height: 80px;
-    background-color: #1A1A1A;
+    height: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    border: 2px solid #262626;
+}
+
+/* --- USER INFO --- */
+.sec-item-box {
+    flex-grow: 1;
+    max-width: 600px;
+}
+
+.name-follow-msg-holder {
     display: flex;
-    justify-content: center;
     align-items: center;
-
-}
-
-.main-hight-box{
-    display: flex;
-    text-align: center;
-    color: grey;
-    justify-content: left;
-    padding-left: 80px;
-    font-size: small;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
-    
-    
-}
-.highlight-name{
-    margin: 5px;
-}
-.highlight-name-box{
-    margin: 20px;
-}
-.division-items{
-    margin: 10px;
-    color: grey;
-    cursor: pointer;
-    
-}
-.underline{
-    background-color: #22d3ee;
-    height: 1px;
-    width: 60px;
-}
-
-.post-have-division{
-    display: flex;
-    justify-content:space-evenly;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
-
-}
-
-.parent-post-holder{
-    display: flex;
-    margin-left: 80px;
+    gap: 15px;
     flex-wrap: wrap;
 }
 
-.post-item{
-    width: 200px;
-    height: 300px;
-    background-color: rgba(128, 128, 128, 0.426);
+.username-actual {
+    font-size: 1.5rem;
+}
+
+.btn-design {
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.only-color-change1 { background: linear-gradient(135deg, #6366f1, #3b82f6); }
+.only-color-change2 { background-color: #262626; }
+
+.post-follower-holder {
+    display: flex;
+    margin-top: 20px;
+    gap: 30px;
+}
+
+.fullName-holder { margin-top: 15px; font-weight: 700; }
+.bio-holder { margin-top: 5px; font-size: 14px; }
+
+/* --- TABS --- */
+.post-have-division {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    border-top: 1px solid rgba(128, 128, 128, 0.293);
+}
+
+.division-items {
+    padding: 15px 0;
+    color: grey;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.active-tab {
+    border-top: 2px solid white;
+    color: white;
+    margin-top: -1px;
+}
+
+.main-user-prof-box{
+    padding-bottom: 70px;
+}
+
+/* --- POST GRID --- */
+.parent-post-holder {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 10px;
+    max-width: 935px;
+    margin: 0 auto;
+    text-align: center;
+}
+.post-item {
+    aspect-ratio: 1 / 1; /* Forces square shape */
+    width: 100%;
+    height: auto;
+    background-color: #262626;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.postImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.main-hight-box {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto; /* Allows horizontal swipe on mobile */
+    padding: 20px 0 20px 80px;
+    gap: 20px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.293);
+    scrollbar-width: none; /* Hides scrollbar for Firefox */
+}
+
+.main-hight-box::-webkit-scrollbar {
+    display: none; /* Hides scrollbar for Chrome/Safari */
+}
+
+.highlight-name-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0; /* Prevents circles from squishing */
+    margin: 0; 
+}
+
+.cirlcle-higlight-holder {
+    width: 75px;
+    height: 75px;
+    background-color: #1A1A1A;
+    border-radius: 50%;
+    border: 1px solid #262626;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px;
-    border-radius: 2px;
+    margin-bottom: 8px;
 }
 
-.postImage{
-    width: 100%;
+.highlight-name {
+    color: grey;
+    font-size: 12px;
+    font-weight: 500;
 }
 
-/* REQUIRED for hover overlay */
-.post-item {
-    position: relative;
-    overflow: hidden;
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .main-hight-box {
+        padding-left: 20px; /* Center-ish on mobile */
+        gap: 15px;
+    }
+    
+    .cirlcle-higlight-holder {
+        width: 65px;
+        height: 65px;
+    }
 }
 
-/* Hover overlay like Instagram */
 .post-hover-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
     opacity: 0;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.2s;
 }
 
-.post-item:hover .post-hover-overlay {
-    opacity: 1;
+.post-item:hover .post-hover-overlay { opacity: 1; }
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .main-prof-divider-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .main-divider-item { margin-left: 0; }
+
+    .name-follow-msg-holder {
+        justify-content: center;
+    }
+
+    .post-follower-holder {
+        justify-content: space-around;
+        border-top: 1px solid rgba(128, 128, 128, 0.1);
+        padding: 10px 0;
+    }
+
+    .main-hight-box {
+        justify-content: center;
+        padding-left: 0;
+    }
+
+    .parent-post-holder {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+        padding: 2px;
+    }
 }
 
-.post-hover-overlay span {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    color: white;
-}
+@media (max-width: 480px) {
+    .main-user-pro-holder {
+        width: 100px;
+        height: 100px;
+        margin-left: 0px;
+    }
+    .main-prof-divider-box{
+        margin-left: 0px;
+    }
 
-/* Active tab underline */
-.active-tab {
-    border-bottom: 2px solid white;
-}
- 
-/* REQUIRED for overlay */
-.post-item {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Hover overlay */
-.post-hover-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.post-item:hover .post-hover-overlay {
-  opacity: 1;
-}
-
-.post-hover-overlay span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-}
-
-/* Active tab underline */
-.active-tab {
-  border-bottom: 2px solid white;
-}
-
-/* Empty state text */
-.empty-text {
-  width: 100%;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 15px;
-  margin-top: 60px;
+    .username-actual { width: 100%; margin-bottom: 10px; }
+    
+    .post-follower-holder div {
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+    }
 }

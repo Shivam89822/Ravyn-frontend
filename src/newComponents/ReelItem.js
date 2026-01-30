@@ -13,11 +13,17 @@ import "./ReelItem.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import ReelComment from "./ReelComment";
+import { useNavigate } from "react-router-dom";
+import ShareBox from "./ShareBox";
+import ShareMessage from "./ShareMessage";
+
 
 function ReelItem({ reel }) {
+  const [shareOn, setShareOn] = useState(false);
   const videoRef = useRef(null);
   const playPromiseRef = useRef(null);
   const user = useSelector((state) => state.user?.user);
+  const navigate=useNavigate();
 
   const isVideo = reel.type === "video";
   const isImage = reel.type === "image";
@@ -93,7 +99,7 @@ function ReelItem({ reel }) {
     return () => observer.disconnect();
   }, [isVideo]);
 
-  /* 🔒 Disable background scroll when comments open */
+
   useEffect(() => {
     document.body.style.overflow = commentOn ? "hidden" : "";
     return () => {
@@ -103,7 +109,6 @@ function ReelItem({ reel }) {
 
   return (
     <div className="vdp-reel-card-container">
-      {/* 🎥 VIDEO */}
       {isVideo && (
         <>
           <video
@@ -163,7 +168,7 @@ function ReelItem({ reel }) {
             </span>
           </div>
 
-          <div className="vdp-reel-icon-box">
+          <div className="vdp-reel-icon-box"  onClick={() => setShareOn(true)}>
             <Send size={28} color="white" />
           </div>
 
@@ -183,10 +188,10 @@ function ReelItem({ reel }) {
                 <img src={reel.userId.mediaUrl} alt="profile" />
               )}
             </div>
-            <span className="vdp-reel-author-name">
+            <span style={{cursor:"pointer"}} onClick={()=>{navigate(`/home/profile/${reel.userId.userName}`)}} className="vdp-reel-author-name">
               {reel.userId.userName}
             </span>
-            <button className="vdp-reel-follow-chip">Follow</button>
+            {/* <button className="vdp-reel-follow-chip">Follow</button> */}
           </div>
 
           <p className="vdp-reel-description">{reel.caption}</p>
@@ -213,6 +218,9 @@ function ReelItem({ reel }) {
           </div>
         </div>
       )}
+     {shareOn && <ShareMessage onClose={() => setShareOn(false)} />}
+
+      
     </div>
   );
 }

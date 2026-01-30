@@ -128,7 +128,7 @@ function SideNavBar({ onCreatePost }) {
            </div>
            <div className="notify-text-item"><X color="white" size={20}/></div>
           </div>
-          <div className="actual-notify-holder">
+          {user.notifications.push&&<div className="actual-notify-holder">
             {notifyItem.map((item,idx)=>(
               <div>
                  {item.type=="follow_request"&&<div className="notify-holder-item">
@@ -224,7 +224,10 @@ function SideNavBar({ onCreatePost }) {
               </div>
             ))}
             
-          </div>   
+          </div>}
+          {!user.notifications.push&&<div style={{display:"flex",justifyContent:"center",margin:"20px"}}>
+            Notification is turnoff
+            </div>}
         </div>}          
       </div>
 

@@ -1,6 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./MessageSection.css";
-import { Phone, Video, Info, Send } from "lucide-react";
+import { Phone, Video, Info, Send, Scale, X ,Unlock} from "lucide-react";
+import {
+  Ban,
+  Star,
+  Shield,
+} from "lucide-react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -19,6 +24,9 @@ import {
   resetPresenceState,
 } from "../features/user/ActiveUserSlice"
 import MessageItem from "./MessageItem";
+import BlockReason from "./BlockReason";
+
+
 
 
 
@@ -34,11 +42,20 @@ function MessageSection() {
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
   const [cursorTime, setCursorTime] = useState(null);
+  const [close,setClose]=useState(false);
+  const [showBox,setShowBox]=useState(false)
+  const [isBlocked,setIsBlocked]=useState(false)
+  const [iBlocked,setIBlocked]=useState(false)
+  
+  const [featureDesign,setFeatureDesign]=useState({
+    transform:"scaleY(0)"
+  })
 
   const conversationRef = useRef(null);
   const messageEndRef = useRef(null);
   const isFetchingRef = useRef(false);
   const hasMoreRef = useRef(true);
+  const overlayRef = useRef(null);
 
   useEffect(() => {
     conversationRef.current = conversationId;
@@ -63,7 +80,6 @@ function MessageSection() {
         hasMoreRef.current = false;
         return;
       }
-
       setMessages((prev) => [...response.data, ...prev]);
       setCursorTime(response.data[0].createdAt);
     } catch (e) {
@@ -79,10 +95,42 @@ function MessageSection() {
         `http://localhost:8080/api/users/${friend}`
       );
       setActiveUser(response.data);
+
     } catch (e) {
       console.log(e.response?.data?.error || "Backend error");
     }
   };
+
+  const blockUSer=async(reason)=>{
+    try{
+      const response=axios.post("http://localhost:8080/api/block/blockuser",{blockerId:user._id,blockedId:activeUser._id,reason:reason});
+      
+      setIsBlocked(true)
+
+    }catch(e){
+      console.log(e.response?.data?.message);
+    }
+  }
+
+ const unBlockUser = async () => {
+  try {
+    await axios.delete(
+      "http://localhost:8080/api/block/unblockuser",
+      {
+        params: {
+          blockerId: user._id,
+          blockedId: activeUser._id,
+        },
+      }
+    );
+    setIsBlocked(false);
+
+  } catch (e) {
+    console.log(e.response?.data?.message || "Backend error");
+  }
+};
+
+  
 
   const sendMsg = async () => {
     try {
@@ -106,6 +154,38 @@ function MessageSection() {
       console.log(e.response?.data?.message || "Backend error");
     }
   };
+
+  const fetchIsBlock=async()=>{
+    try{
+      const response=await axios.get("http://localhost:8080/api/block/checkblock",{
+        params:{blockerId:user._id,blockedId:activeUser._id}
+      })
+      setIsBlocked(response.data);
+      console.log(response.data)
+      
+    }catch(e){
+      console.log(e.response?.data?.message||"Backend error");
+    }
+  }
+
+  const fetchIsIBlock=async()=>{
+    try{
+      const response=await axios.get("http://localhost:8080/api/block/checkblock",{
+        params:{blockerId:activeUser._id,blockedId:user._id}
+      })
+      setIBlocked(response.data);
+      console.log(response.data)
+      
+    }catch(e){
+      console.log(e.response?.data?.message||"Backend error");
+    }
+  }
+  useEffect(()=>{
+    if(activeUser){
+      fetchIsBlock();
+      fetchIsIBlock();
+    };
+  },[activeUser])
 
   useEffect(() => {
     const el = messageEndRef.current;
@@ -147,6 +227,26 @@ function MessageSection() {
   }, []);
 
   useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        overlayRef.current &&
+        !overlayRef.current.contains(e.target)
+      ) {
+         setClose(true);
+         setFeatureDesign({
+          transform:"scaleY(0)"
+         })
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [close]);
+
+  useEffect(() => {
     if (!messageEndRef.current) return;
     messageEndRef.current.scrollTop =
       messageEndRef.current.scrollHeight;
@@ -177,6 +277,7 @@ function MessageSection() {
 
   return (
     <div className="msg-wrapper">
+      {showBox&&<BlockReason onClose={()=>{setShowBox(false)}} onConfirm={(reason)=>{blockUSer(reason);setShowBox(false)}}/>}
       <div className="msg-left">
         <div className="left-fixed">
           <h2 className="msg-title">Messages</h2>
@@ -234,7 +335,24 @@ function MessageSection() {
             <div className="chat-actions">
               <div><Phone size={20} /></div>
               <div><Video size={20} /></div>
-              <div><Info size={20} /></div>
+              <div><Info size={20} onClick={()=>{if(close){setFeatureDesign({transform:"scaleY(1)"})}else{setFeatureDesign({transform:"scaleY(0)"})}}} /></div>
+            </div>
+            <div className="feature-overlay" style={featureDesign} ref={overlayRef} >
+              <button onClick={()=>{setShowBox(true)}} className="overlay-item block">
+                <Ban size={18} />
+                <span>Block</span>
+              </button>
+
+              <button className="overlay-item">
+                <Star size={18} />
+                <span>Close Friend</span>
+              </button>
+
+              <button className="overlay-item">
+                <Shield size={18} />
+                <span>Restrict</span>
+              </button>
+
             </div>
           </div>
         </div>
@@ -249,7 +367,39 @@ function MessageSection() {
         </div>
 
         <div className="right-fixed-bottom">
-          <div className="send-msg">
+          
+
+          {isBlocked&&<div className="blocked-box">
+            <Ban size={18} />
+
+            <div className="blocked-text">
+              <h4>User Blocked</h4>
+              <p>
+                You have blocked this user.  
+                You won’t see their content or receive messages.
+              </p>
+            </div>
+
+            <button onClick={()=>{unBlockUser()}} className="unblock-btn" >
+              <Unlock size={16} />
+              Unblock
+            </button>
+          </div>}
+          {iBlocked&&<div className="blocked-box">
+            <Ban size={18} />
+
+            <div className="blocked-text">
+              <h4>User Blocked You</h4>
+              <p>
+                you got blocked by this user  
+                You won’t see their content or receive messages.
+              </p>
+            </div>
+          </div>
+
+          }
+          
+          {!isBlocked&&!iBlocked&&<div className="send-msg">
             <input
               value={currMsg}
               onChange={(e) => setCurrMsg(e.target.value)}
@@ -258,7 +408,7 @@ function MessageSection() {
             <div className="send-holder" onClick={sendMsg}>
               <Send size={22} />
             </div>
-          </div>
+          </div>}
         </div>
       </div>}
       {!activeUser&&<div className="empty-chat-container">

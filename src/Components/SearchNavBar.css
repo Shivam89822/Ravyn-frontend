@@ -1,139 +1,119 @@
-.icon-wrapper {
-  display: flex;
-  gap: 16px;
-}
-
-#search-navbar{
-    background-color: #0D0D0D;
+#search-navbar {
+    background-color: #0E1423;
     width: 100%;
     position: sticky;
     top: 0px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(128, 128, 128, 0.427);
-    
     height: 60px;
-    z-index: 10;
+    z-index: 1000;
+    padding: 0 20px;
 }
 
-.nav-items{
-  margin: 10px;
-}
-
-
-#main-search{
-  background-color: #1A1A1A;
-  border: 1px solid #262626;
-  outline: none;
-  color: white;
-  padding: 10px;
-  border-radius: 20px;
-  width: 300px;
-  /* margin: 8px; */
-  margin-left: 100px;
-}
-
-#main-search:focus{
-  border: 2px solid #06b6d4;
-}
-.icon-circle {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  cursor: pointer;
-}
-
-.icon-circle:hover {
-  background: #1a1a1a;
-}
-
-.notification-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: linear-gradient(135deg, #a855f7, #ec4899);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.search-guess-box{
-  position: absolute;
-}
-
-.search-guess{
-  /* border: 2px solid red; */
-  border-bottom: 1px solid rgba(128, 128, 128, 0.195);
+.nav-logo-mobile {
+    display: none;
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(to right, #2563eb, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
 }
 
 .search-holder-box {
-  position: relative;
+    position: relative;
+    width: 100%;
+    max-width: 400px;
 }
 
-/* Dropdown box */
+#main-search {
+    background-color: #1A1A1A;
+    border: 1px solid #262626;
+    outline: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: 100%;
+}
+
+#main-search:focus {
+    border: 2px solid #06b6d4;
+}
+
 .search-guess-box {
-  position: absolute;
-  top: 70px;
-  left: 100px;
-  width: 320px;
-  background: #111;
-  /* border: 1px solid #262626; */
-  border-radius: 12px;
-  overflow: hidden;
-  z-index: 100;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    background: #111;
+    border-radius: 12px;
+    overflow-y: auto;
+    max-height: 350px;
+    z-index: 1001;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
 }
 
-/* Each user row */
 .search-guess {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.search-guess:hover {
-  background: #1a1a1a;
-}
-
-/* Profile circle */
 .is-profile-holder {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(to right, #a855f7, #ec4899);
-  color: black;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    background: linear-gradient(to bottom right, #2563eb, #9333ea);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
 
-/* Text */
 .contain-name-user {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .user-above-info {
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
+    color: white;
+    font-size: 14px;
 }
 
 .user-below-info {
-  color: #9ca3af;
-  font-size: 12px;
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+@media (max-width: 768px) {
+    #search-navbar {
+        padding: 0 15px;
+        gap: 10px;
+    }
+
+    .nav-logo-mobile {
+        display: block;
+    }
+
+    .search-holder-box {
+        flex: 1;
+    }
+
+    #main-search {
+        font-size: 13px;
+    }
+
+    .search-guess-box {
+        width: calc(100vw - 30px);
+        left: 50%;
+        transform: translateX(-50%);
+        position: fixed;
+        top: 65px;
+    }
 }
