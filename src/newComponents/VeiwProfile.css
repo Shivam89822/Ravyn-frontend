@@ -45,6 +45,59 @@
   justify-content: center;
 }
 
+.create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  background: linear-gradient(to bottom right, #2563eb, #9333ea);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 20px rgba(37, 99, 235, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.25s ease;
+}
+
+.create-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 14px 30px rgba(147, 51, 234, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.create-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 6px 14px rgba(37, 99, 235, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.create-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-text {
+  position: relative;
+  top: 0.5px;
+}
+
+.min-display-btn{
+  display: none;
+  
+}
+
 /* User Icon */
 .user-icon {
   color: #7a7a7a;
@@ -152,6 +205,36 @@
     font-weight: 600;
 }
 
+.settings-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 25px;
+  margin-left: 8px;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
+}
+
+.settings-btn:active {
+  transform: scale(0.95);
+}
+
+.settings-btn svg {
+  opacity: 0.9;
+}
+
+
 .action-btn {
             margin-top: 20px;
             flex: 1;
@@ -207,6 +290,9 @@
 @media (max-width: 1024px) {
   .user-profile-container {
     padding: 30px;
+  }
+  .min-display-btn{
+    display: flex;
   }
 
   .user-profile-upper-container {

@@ -11,6 +11,7 @@ function SearchNavBar() {
   const [suggestedPlayer, setSuggestedPlayer] = useState([]);
   const navigate = useNavigate()
   const [currSearch, setCurrSearch] = useState("")
+  
 
   const debouncedSearch = useCallback(
     debounce(async (val) => {
@@ -21,7 +22,7 @@ function SearchNavBar() {
 
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/user/fetchuser",
+          " https://ravyn-backend.onrender.com/api/user/fetchuser",
           {
             params: { data: val, userId: user?._id }
           }
@@ -72,6 +73,10 @@ function SearchNavBar() {
             ))}
           </div>
         )}
+      </div>
+      <div className="notification-bell" onClick={()=>{navigate("/home/noticications")}}>
+        <Bell size={20} color="white" />
+        <span className="notification-badge">3</span>
       </div>
     </nav>
   );

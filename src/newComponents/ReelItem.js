@@ -8,6 +8,9 @@ import {
   Music2,
   Volume2,
   VolumeX,
+   ChevronLeft,
+   ArrowLeft,
+  
 } from "lucide-react";
 import "./ReelItem.css";
 import axios from "axios";
@@ -19,10 +22,12 @@ import ShareMessage from "./ShareMessage";
 
 
 function ReelItem({ reel }) {
+  
   const [shareOn, setShareOn] = useState(false);
   const videoRef = useRef(null);
   const playPromiseRef = useRef(null);
   const user = useSelector((state) => state.user?.user);
+  const [isSaved,setIsSaved]=useState(reel.isSaved);
   const navigate=useNavigate();
 
   const isVideo = reel.type === "video";
@@ -41,9 +46,36 @@ function ReelItem({ reel }) {
     video.paused ? video.play() : video.pause();
   };
 
+    const savePost=async()=>{
+       try{
+        await axios.post(" https://ravyn-backend.onrender.com/api/post/saved",{
+          userId:user._id,
+          postId:reel._id
+        })
+        setIsSaved(true);
+      
+      }catch(e){
+        console.log(e.response?.data?.message||"Backend error");
+      }
+    }
+  
+    const removeSave = async () => {
+    try {
+      await axios.delete(" https://ravyn-backend.onrender.com/api/post/removesave", {
+        data: {
+          userId: user._id,
+          postId: reel._id
+        }
+      });
+      setIsSaved(false);
+    } catch (e) {
+      console.log(e.response?.data?.message || "Backend error");
+    }
+  };
+
   const likePost = async () => {
     try {
-      await axios.post("http://localhost:8080/api/post/like", {
+      await axios.post(" https://ravyn-backend.onrender.com/api/post/like", {
         userId: user._id,
         postId: reel._id,
       });
@@ -56,7 +88,7 @@ function ReelItem({ reel }) {
 
   const unlikePost = async () => {
     try {
-      await axios.post("http://localhost:8080/api/post/unlike", {
+      await axios.post(" https://ravyn-backend.onrender.com/api/post/unlike", {
         userId: user._id,
         postId: reel._id,
       });
@@ -109,6 +141,7 @@ function ReelItem({ reel }) {
 
   return (
     <div className="vdp-reel-card-container">
+      <div className="back-arrow" onClick={()=>{navigate("/home")}}><ArrowLeft size={24} color="white"/></div>
       {isVideo && (
         <>
           <video
@@ -173,7 +206,7 @@ function ReelItem({ reel }) {
           </div>
 
           <div className="vdp-reel-icon-box">
-            <Bookmark size={28} color="white" />
+            <Bookmark onClick={()=>{isSaved?removeSave():savePost()}} fill={isSaved?"#22d3ee":"white"} stroke={isSaved?"#22d3ee":"white"} size={32} />
           </div>
 
           <div className="vdp-reel-icon-box">
@@ -218,7 +251,7 @@ function ReelItem({ reel }) {
           </div>
         </div>
       )}
-     {shareOn && <ShareMessage onClose={() => setShareOn(false)} />}
+     {shareOn && <ShareBox setShareBox={setShareOn} post={reel} setPost={null}/>}
 
       
     </div>

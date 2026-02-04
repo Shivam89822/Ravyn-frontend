@@ -6,6 +6,10 @@ import { useSelector } from "react-redux";
 import axios from "axios"
 
 function StatusElement() {
+  const touchStartX = useRef(0);
+const touchEndX = useRef(0);
+const MIN_SWIPE_DISTANCE = 50;
+
   const [status, setStatus] = useState([]);
   const user = useSelector((state) => state.user.user);
   const { username } = useParams();
@@ -18,7 +22,7 @@ function StatusElement() {
   const containerRef=useRef(null);
   const fetchStatus = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/status/get", {
+      const response = await axios.get(" https://ravyn-backend.onrender.com/api/status/get", {
         params: { userId: user._id },
       });
       const data = response.data;
@@ -51,6 +55,27 @@ function StatusElement() {
       }, 100);
     }
   };
+
+  const handleTouchStart = (e) => {
+  touchStartX.current = e.touches[0].clientX;
+};
+
+const handleTouchMove = (e) => {
+  touchEndX.current = e.touches[0].clientX;
+};
+
+const handleTouchEnd = () => {
+  const distance = touchStartX.current - touchEndX.current;
+
+  if (Math.abs(distance) < MIN_SWIPE_DISTANCE) return;
+
+  if (distance > 0) {
+    handleNext();
+  } else {
+    handlePrev();
+  }
+};
+
 
   const handleNext = () => {
     if (isTransitioning) return;
@@ -131,7 +156,15 @@ useEffect(() => {
 
       <div className="carousel-container">
         {status.map((item, index) => (
-          <div key={item._id} className={getItemClass(index)} ref={index===currIdx?containerRef:null}>
+          <div
+            key={item._id}
+            className={getItemClass(index)}
+            ref={index === currIdx ? containerRef : null}
+            onTouchStart={index === currIdx ? handleTouchStart : undefined}
+            onTouchMove={index === currIdx ? handleTouchMove : undefined}
+            onTouchEnd={index === currIdx ? handleTouchEnd : undefined}
+>
+
             {item.type === "image" ? (
               <img
                 className="status-media"

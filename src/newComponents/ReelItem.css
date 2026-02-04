@@ -33,6 +33,39 @@
   cursor: pointer;
 }
 
+.back-arrow {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  z-index: 999;  
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+
+  color: white;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.back-arrow:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.back-arrow:active {
+  transform: scale(0.95);
+}
+
 /* Tap hint */
 .vdp-reel-tap-hint {
   position: absolute;
@@ -168,6 +201,7 @@
 }
 
 .comment-holder {
+  
   position: fixed;
   inset: 0;                 /* ✅ MUST be here */
   z-index: 9999;

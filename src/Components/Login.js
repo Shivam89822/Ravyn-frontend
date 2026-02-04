@@ -13,6 +13,7 @@ emailjs.init('ctXygJkKLayqZOPO9');
 function Login(props) {
 const navigate = useNavigate();
 const dispatch=useDispatch();
+const API_URL = import.meta.env.REACT_APP_API_URL;
 
      const {
         register,
@@ -24,7 +25,7 @@ const dispatch=useDispatch();
 
   const onSubmit = async(data) =>{
     try{
-      const response=await axios.post("http://localhost:8080/api/auth/login",{
+      const response=await axios.post(` ${API_URL}/api/auth/login`,{
         user:data
       })
       if(!response){

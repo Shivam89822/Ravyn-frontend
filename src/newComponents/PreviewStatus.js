@@ -66,7 +66,7 @@ function PreviewStatus({statusRef, status, setStatus}) {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/status/post", {
+      await axios.post(" https://ravyn-backend.onrender.com/api/status/post", {
         userId: user._id,
         elements: elements,
         data: data,

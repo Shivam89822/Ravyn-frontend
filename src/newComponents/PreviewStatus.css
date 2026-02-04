@@ -276,3 +276,192 @@
   background: #020617;
   color: #e5e7eb;
 }
+
+
+
+.status-preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 9999;
+  display: flex;
+  flex-direction: row; /* Desktop layout */
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.status-preview-item {
+  background-color: #111827;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidebar Icons */
+.status-preview-item:first-child {
+  flex-basis: 80px;
+  flex-shrink: 0;
+  align-items: center;
+  border-right: 1px solid #1f2937;
+  padding-top: 10px;
+}
+
+/* Central Reel Area */
+.reel-container {
+  flex: 1; /* Takes remaining space */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+}
+
+.status-preview-reel {
+  max-height: 95vh;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Right Editor Box */
+.editor-box {
+  width: 350px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid #1f2937;
+}
+
+/* Internal padding fix */
+.editor-box > div {
+  padding: 15px;
+}
+
+.tab-holder {
+  margin: 10px;
+  padding: 15px;
+  background-color: #1F2937;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab-holder.active {
+  background-color: #374151;
+  color: #db2777;
+}
+
+/* Overlay Text */
+.text-overlay {
+  position: absolute;
+  font-weight: 700;
+  color: white;
+  cursor: grab;
+  user-select: none;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+}
+
+/* Textarea styling */
+.textarea-holder textarea {
+  width: 100%;
+  box-sizing: border-box;
+  height: 100px;
+  background-color: #1F2937;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  color: white;
+  padding: 10px;
+  resize: none;
+}
+
+/* Buttons */
+.add-text-btn button {
+  background: linear-gradient(to right, #9333ea, #db2777);
+  color: white;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.bottom-main-box {
+  border-top: 1px solid #1F2937;
+  padding: 15px;
+}
+
+.share-btn {
+  background: linear-gradient(to right, #9333ea, #db2777);
+  border: none;
+}
+
+/* Mobile Responsive Breakpoint */
+@media (max-width: 768px) {
+  .status-preview-overlay {
+    flex-direction: column;
+  }
+
+  /* Sidebar moves to top */
+  .status-preview-item:first-child {
+    flex-basis: auto;
+    height: 60px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 0;
+    border-right: none;
+    border-bottom: 1px solid #1f2937;
+  }
+
+  .tab-holder {
+    margin: 5px;
+    padding: 10px;
+  }
+
+  /* Reel gets middle space */
+  .reel-container {
+    height: 50vh;
+    flex: none;
+  }
+
+  /* Editor moves to bottom */
+  .editor-box {
+    width: 100%;
+    height: auto;
+    flex: 1;
+    border-left: none;
+    border-top: 1px solid #1f2937;
+    overflow-y: auto;
+  }
+
+  .status-preview-reel {
+    max-height: 45vh;
+  }
+}
+
+/* Re-applying your existing color/font specific styles */
+.color-box-holder {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.color-style-box1 {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.activeColor { transform: scale(1.1); border: 2px solid white; }
+.range-holder { margin: 10px 0; }
+.range-input { width: 100%; cursor: pointer; }
+.font-family-select { width: 100%; padding: 8px; border-radius: 8px; background: #1f2937; color: white; }

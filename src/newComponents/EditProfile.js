@@ -52,7 +52,7 @@ function EditProfile() {
     }
 
     const response = await axios.patch(
-      `http://localhost:8080/api/users/${user._id}`,
+      ` https://ravyn-backend.onrender.com/api/users/${user._id}`,
       data
     );
 

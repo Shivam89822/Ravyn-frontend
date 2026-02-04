@@ -27,7 +27,7 @@ function SearchTab() {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/reels/search",
+        " https://ravyn-backend.onrender.com/api/reels/search",
         {
           params: { cursorTime: cursorTime },
         }

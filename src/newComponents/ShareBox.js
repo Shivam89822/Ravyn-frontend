@@ -12,7 +12,7 @@ function ShareBox({setShareBox,post,setPost}) {
     const sendReels=async()=>{
       setDisable(true)
       try{
-        const response=await axios.post("http://localhost:8080/api/reels/share",{
+        const response=await axios.post(" https://ravyn-backend.onrender.com/api/reels/share",{
           users:selected,
           postId:post._id,
           sender:user._id
@@ -36,7 +36,7 @@ function ShareBox({setShareBox,post,setPost}) {
        
         <div className="share-header">
           <h3>Share with Friends</h3>
-          <X className="close-icon" onClick={()=>{setShareBox(false);setPost(null)}}/>
+          <X className="close-icon" onClick={()=>{setShareBox(false);if(setPost)setPost(null)}}/>
         </div>
 
        

@@ -17,7 +17,7 @@ function ReelComment({post,setPost}) {
 
   const likeComment = async (commentId) => {
   try {
-    await axios.post("http://localhost:8080/api/post/likeComment", {
+    await axios.post(" https://ravyn-backend.onrender.com/api/post/likeComment", {
       userId: user._id,
       commentId
     });
@@ -36,7 +36,7 @@ function ReelComment({post,setPost}) {
 
 const dislikeComment = async (commentId) => {
   try {
-    await axios.post("http://localhost:8080/api/post/unlikeComment", {
+    await axios.post(" https://ravyn-backend.onrender.com/api/post/unlikeComment", {
       userId: user._id,
       commentId
     });
@@ -58,7 +58,7 @@ const dislikeComment = async (commentId) => {
   const fetchComments = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/post/fetchComment",
+        " https://ravyn-backend.onrender.com/api/post/fetchComment",
         {
           params: { postId: post._id ,userId:user._id}
         }
@@ -75,7 +75,7 @@ const dislikeComment = async (commentId) => {
 
     setIsPosting(true);
     try {
-      await axios.post("http://localhost:8080/api/post/comment", {
+      await axios.post(" https://ravyn-backend.onrender.com/api/post/comment", {
         user: user._id,
         post: post._id,
         text: commentValue

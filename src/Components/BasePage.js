@@ -21,6 +21,19 @@ function BasePage() {
   const showBottomNav = useSelector((state) => state.ui.showBottomNav);
 
   const isReelsPage = location.pathname === "/home/reels";
+  const hideBottomNavRoutes = [
+  "/home/user-profile/edit-profile"
+];
+
+const shouldHideBottomNav = hideBottomNavRoutes.includes(location.pathname);
+useEffect(() => {
+  if (shouldHideBottomNav) {
+    dispatch(hideBottomNav());
+  } else {
+    dispatch(showBottomNavAction());
+  }
+}, [shouldHideBottomNav, dispatch]);
+
   
 //   useEffect(() => {
 //   if (location.pathname === "/home/reels") {

@@ -26,6 +26,8 @@ function Feed() {
   const navigate=useNavigate();
   const [viralCursor, setViralCursor] = useState(null);
   const [hasMoreViral,setHasMoreViral]=useState(true);
+  const [userStatus,setUserStatus]=useState([]);
+  const [suggestion,setSuggestion]=useState([]);
   
 
   const bottomRef = useRef(null);
@@ -36,13 +38,31 @@ function Feed() {
     statusFileRef.current.click();
   }
 
+  const fetchUnFollowed=async()=>{
+    try{
+      const response =await axios.get("",{
+        params:{userId:user._id}
+      })
+    }
+    catch(e){
+      console.log(e.response?.data?.message||"Backend error")
+    }
+  }
 
   const fetchStatus=async(req,res)=>{
     try{
-      const response =await axios.get("http://localhost:8080/api/status/get",{
+      const response =await axios.get(" https://ravyn-backend.onrender.com/api/status/get",{
         params:{userId:user._id}
       });
     setStatus(response.data);
+    const data=response.data;
+    data.forEach(element => {
+      if(element.user._id==user._id){
+        setUserStatus(prev=>[...prev,element]);
+        console.log("found")
+      }
+    });
+   
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
     }
@@ -68,7 +88,7 @@ function Feed() {
 
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/user/feed",
+        " https://ravyn-backend.onrender.com/api/user/feed",
         {
           params: {
             limit: 5,
@@ -104,7 +124,7 @@ function Feed() {
 
     setLoader(true);
     try{
-      const response =await axios.get("http://localhost:8080/api/post/fetchviralreel",{params:{viralCursor:viralCursor}});
+      const response =await axios.get(" https://ravyn-backend.onrender.com/api/post/fetchviralreel",{params:{viralCursor:viralCursor}});
       const { reels, nextCursor } = response.data;
       if (!reels || reels.length < 3) {
       

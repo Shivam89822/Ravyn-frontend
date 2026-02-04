@@ -11,6 +11,9 @@
 
 
 }
+.notify-holder-box{
+    z-index: 2000;
+}
 
 
 .logo{
@@ -159,6 +162,7 @@
    display: flex;
     color: white;
     justify-content: space-between;
+    z-index: 2000;
 }
 
 .purple{
@@ -183,6 +187,11 @@
   #4ade80,
   #16a34a
 );
+}
+
+.nav-link{
+    text-decoration: none;
+    color: inherit;
 }
 
 .yellow{

@@ -15,7 +15,7 @@ function ReelSection() {
 
 const fetchReel=async()=>{
     try{
-        const response = await axios.get("http://localhost:8080/api/reels", {
+        const response = await axios.get(" https://ravyn-backend.onrender.com/api/reels", {
         params: { userId: user?._id, cursorTime }
       });
         const {hasMore:hasMore,nextCursorTime:nextCursorTime,reels:reels}= response.data
@@ -47,7 +47,7 @@ const fetchReel=async()=>{
 
 const fetchOnePost=async()=>{
   try{
-    const response=await axios.get("http://localhost:8080/api/post/fetchone",{params:{reelId:reelId}})
+    const response=await axios.get(" https://ravyn-backend.onrender.com/api/post/fetchone",{params:{reelId:reelId}})
     setReels([response.data]);
     setHasMore(true);    
   }catch(e){

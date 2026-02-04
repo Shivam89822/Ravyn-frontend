@@ -3,6 +3,7 @@ import "./PostCard.css";
 import { Heart, MessageCircle, Bookmark, Play,Send } from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 function PostCard({currPost, post,setShareBox }) {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -10,6 +11,7 @@ function PostCard({currPost, post,setShareBox }) {
   const [isLikes,setIsLike]=useState(post.isLiked);
   const [likeCount,setLikeCount]=useState(post.likeCount);
   const [isSaved,setIsSaved]=useState(post.isSaved);
+  const navigate=useNavigate();
 
    const formatMessageTime = (date) => {
     const msgDate = new Date(date);
@@ -50,7 +52,7 @@ function PostCard({currPost, post,setShareBox }) {
     setIsLike(true)
       setLikeCount(likeCount+1);
     try{
-      await axios.post("http://localhost:8080/api/post/like",{
+      await axios.post(" https://ravyn-backend.onrender.com/api/post/like",{
         userId:user._id,
         postId:post._id
       })
@@ -63,7 +65,7 @@ function PostCard({currPost, post,setShareBox }) {
 
   const savePost=async()=>{
      try{
-      await axios.post("http://localhost:8080/api/post/saved",{
+      await axios.post(" https://ravyn-backend.onrender.com/api/post/saved",{
         userId:user._id,
         postId:post._id
       })
@@ -76,7 +78,7 @@ function PostCard({currPost, post,setShareBox }) {
 
   const removeSave = async () => {
   try {
-    await axios.delete("http://localhost:8080/api/post/removesave", {
+    await axios.delete(" https://ravyn-backend.onrender.com/api/post/removesave", {
       data: {
         userId: user._id,
         postId: post._id
@@ -93,7 +95,7 @@ function PostCard({currPost, post,setShareBox }) {
     setIsLike(false)
       setLikeCount(likeCount-1);
     try{
-      await axios.post("http://localhost:8080/api/post/unlike",{
+      await axios.post(" https://ravyn-backend.onrender.com/api/post/unlike",{
         userId:user._id,
         postId:post._id
       })
@@ -114,7 +116,7 @@ function PostCard({currPost, post,setShareBox }) {
         </div>
 
         <div className="name-time-holder first-items">
-          <div>{post?.userId?.userName}</div>
+          <div onClick={()=>{navigate(`/home/profile/${post?.userId?.userName}`)}}>{post?.userId?.userName}</div>
           <div className="post-time">{formatMessageTime(post?.createdAt)}</div>
         </div>
       </div>

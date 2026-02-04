@@ -354,3 +354,9 @@
     font-size: 13px;
   }
 }
+
+@media (max-width: 768px) {
+  .nav-button {
+    display: none;
+  }
+}

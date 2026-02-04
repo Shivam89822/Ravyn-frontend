@@ -70,7 +70,7 @@ export default function CreatePost(props) {
    
 
   try{
-    const response=await axios.post("http://localhost:8080/api/posts",data);
+    const response=await axios.post(" https://ravyn-backend.onrender.com/api/posts",data);
     setIsSubmited(false)
 
   }catch(e){

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,10 +32,12 @@ import SearchTab from "./newComponents/SearchTab";
 import PreviewStatus from "./newComponents/PreviewStatus";
 import StatusElement from "./newComponents/StatusElement";
 import Setting from "./newComponents/SettingsPage";
+import Notifications from "./newComponents/Notifications";
 
 
 function App() {
   const dispatch = useDispatch();
+  const API_URL = import.meta.env.REACT_APP_API_URL;
   const { isAuthenticated, isAuthChecked } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user.user);
   const conversations = useSelector((state) => state.conversations.conversations);
@@ -45,7 +48,7 @@ function App() {
   const fetchConversation = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/fetchConversation",
+        `${API_URL}/api/fetchConversation`,
         { params: { userId: user._id } }
       );
       dispatch(setConversations(response.data));
@@ -63,7 +66,7 @@ function App() {
 
       try {
         const res = await axios.post(
-          "http://localhost:8080/api/auth/verify",
+          `${API_URL}/api/auth/verify`,
           {},
           { headers: { authorization: `Bearer ${token}` } }
         );
@@ -145,6 +148,8 @@ function App() {
             <Route path="search" element={<SearchTab />} />
             <Route path="status" element={<PreviewStatus />} />
             <Route path="settings" element={<Setting/>}/>
+            <Route path="noticications" element={<Notifications/>}/>
+
           </Route>
 
           <Route path="/status/:username" element={<StatusElement />} />

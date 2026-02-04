@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./MessageSection.css";
-import { Phone, Video, Info, Send, Scale, X ,Unlock} from "lucide-react";
+import { Phone, Video, Info, Send, Scale, X ,Unlock,ArrowLeft} from "lucide-react";
 import {
   Ban,
   Star,
   Shield,
 } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import socket from "../Socket";
@@ -31,6 +31,7 @@ import BlockReason from "./BlockReason";
 
 
 function MessageSection() {
+  const navigate=useNavigate()
   const location = useLocation();
   const user = useSelector((state) => state.user.user);
   const [friend, setFriend] = useState(location.state?.friendName || "");
@@ -67,7 +68,7 @@ function MessageSection() {
 
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/fetchMessage",
+        " https://ravyn-backend.onrender.com/api/fetchMessage",
         {
           params: {
             conversationId: convId,
@@ -92,7 +93,7 @@ function MessageSection() {
   const fetchCurrentUser = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/users/${friend}`
+        ` https://ravyn-backend.onrender.com/api/users/${friend}`
       );
       setActiveUser(response.data);
 
@@ -103,7 +104,7 @@ function MessageSection() {
 
   const blockUSer=async(reason)=>{
     try{
-      const response=axios.post("http://localhost:8080/api/block/blockuser",{blockerId:user._id,blockedId:activeUser._id,reason:reason});
+      const response=axios.post(" https://ravyn-backend.onrender.com/api/block/blockuser",{blockerId:user._id,blockedId:activeUser._id,reason:reason});
       
       setIsBlocked(true)
 
@@ -115,7 +116,7 @@ function MessageSection() {
  const unBlockUser = async () => {
   try {
     await axios.delete(
-      "http://localhost:8080/api/block/unblockuser",
+      " https://ravyn-backend.onrender.com/api/block/unblockuser",
       {
         params: {
           blockerId: user._id,
@@ -135,7 +136,7 @@ function MessageSection() {
   const sendMsg = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/message/sendMessage",
+        " https://ravyn-backend.onrender.com/api/message/sendMessage",
         {
           senderId: user._id,
           reciverId: activeUser._id,
@@ -157,7 +158,7 @@ function MessageSection() {
 
   const fetchIsBlock=async()=>{
     try{
-      const response=await axios.get("http://localhost:8080/api/block/checkblock",{
+      const response=await axios.get(" https://ravyn-backend.onrender.com/api/block/checkblock",{
         params:{blockerId:user._id,blockedId:activeUser._id}
       })
       setIsBlocked(response.data);
@@ -170,7 +171,7 @@ function MessageSection() {
 
   const fetchIsIBlock=async()=>{
     try{
-      const response=await axios.get("http://localhost:8080/api/block/checkblock",{
+      const response=await axios.get(" https://ravyn-backend.onrender.com/api/block/checkblock",{
         params:{blockerId:activeUser._id,blockedId:user._id}
       })
       setIBlocked(response.data);
@@ -280,7 +281,11 @@ function MessageSection() {
       {showBox&&<BlockReason onClose={()=>{setShowBox(false)}} onConfirm={(reason)=>{blockUSer(reason);setShowBox(false)}}/>}
       <div className="msg-left">
         <div className="left-fixed">
-          <h2 className="msg-title">Messages</h2>
+          <div className="back-msg-holder">
+            <div className="back-arrow-msg" onClick={()=>{navigate("/home")}}><ArrowLeft size={24} color="white"/></div>
+            <h2 className="msg-title">Messages</h2>
+          </div>
+          
           <input type="search" className="msg-search" placeholder="Search messages..." />
         </div>
 
@@ -328,14 +333,15 @@ function MessageSection() {
             <div className="chat-user-inner">
               <div className="avatar large"></div>
               <div>
-                {activeUser && <div className="chat-name">{activeUser.fullName}</div>}
+                {activeUser && <div className="chat-name"><Link to={`/home/profile/${activeUser.userName}`} className="nav-link">{activeUser.fullName}</Link></div>}
                 {activeUsers[activeUser._id]&&<div className="chat-status">Active now</div>}
               </div>
             </div>
             <div className="chat-actions">
-              <div><Phone size={20} /></div>
+              
               <div><Video size={20} /></div>
               <div><Info size={20} onClick={()=>{if(close){setFeatureDesign({transform:"scaleY(1)"})}else{setFeatureDesign({transform:"scaleY(0)"})}}} /></div>
+              <div><ArrowLeft onClick={()=>{navigate("/home")}} size={20} /></div>
             </div>
             <div className="feature-overlay" style={featureDesign} ref={overlayRef} >
               <button onClick={()=>{setShowBox(true)}} className="overlay-item block">

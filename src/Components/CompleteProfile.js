@@ -10,7 +10,7 @@ import { setUser, clearUser,updateUser } from '../features/user/UserSlice'; // A
 import Loader from './Loader';
 
 function CompleteProfile() {
- 
+ const API_URL = import.meta.env.REACT_APP_API_URL;
   const {
     register,
     handleSubmit,
@@ -87,7 +87,7 @@ function CompleteProfile() {
       data.intrests = intrest; // Attach the array of interests
       data.isFirstLogin=false;
 
-      const response=await axios.patch(`http://localhost:8080/api/users/${user._id}`, data);
+      const response=await axios.patch(` ${API_URL}/api/users/${user._id}`, data);
       // alert("User updated successfully");
       dispatch(updateUser(response.data))
       console.log(response.data)

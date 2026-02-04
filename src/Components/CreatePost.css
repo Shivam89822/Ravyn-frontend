@@ -191,7 +191,6 @@
   border-color: #a855f7;
 }
 
-/* HASHTAGS */
 .hashtag-list {
   display: flex;
   gap: 8px;
@@ -269,4 +268,92 @@
   height: 100%;
   object-fit: cover; /* This makes it fill the square/rectangle like a Reel */
   border-radius: 8px;
+}
+
+
+
+@media (max-width: 1200px) {
+  .post-shower {
+    width: 92vw;
+  }
+}
+
+@media (max-width: 900px) {
+  .post-shower {
+    width: 95vw;
+    height: auto;
+    overflow: scroll;
+  }
+
+  .post-body {
+    flex-direction: column;
+    height: auto;
+    /* overflow: scroll; */
+  }
+
+  .media-preview {
+    height: 45vh;
+    flex: none;
+  }
+
+  .preview-content {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .post-form-holder {
+    flex: none;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .upload-card {
+    width: 92vw;
+    padding: 20px;
+  }
+
+  .upload-area {
+    padding: 36px 14px;
+  }
+
+  .post-header {
+    font-size: 1rem;
+    padding: 14px 16px;
+  }
+
+  .post-shower {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .media-preview {
+    height: 40vh;
+  }
+
+  .post-form-holder textarea {
+    min-height: 70px;
+  }
+
+  .share-btn {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .primary-text {
+    font-size: 1rem;
+  }
+
+  .secondary-text {
+    font-size: 0.8rem;
+  }
+
+  .hashtag {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
 }

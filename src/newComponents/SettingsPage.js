@@ -15,7 +15,7 @@ export default function SettingsPage() {
   const fetchNotifications = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/user/notifications",
+        " https://ravyn-backend.onrender.com/api/user/notifications",
         { params: { userId: user._id } }
       );
       setNotifications({
@@ -37,7 +37,7 @@ export default function SettingsPage() {
       
       setNotifications(updatedNotifications);
 
-      await axios.put("http://localhost:8080/api/user/update-notifications", {
+      await axios.put(" https://ravyn-backend.onrender.com/api/user/update-notifications", {
         userId: user._id,
         notifications: {
           push: updatedNotifications.push,
@@ -54,7 +54,7 @@ export default function SettingsPage() {
   const unBlockUser = async (blockedId) => {
     try {
       await axios.delete(
-        "http://localhost:8080/api/block/unblockuser",
+        " https://ravyn-backend.onrender.com/api/block/unblockuser",
         {
           params: {
             blockerId: user._id,
@@ -77,7 +77,7 @@ export default function SettingsPage() {
 
   const fetchBlocked = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/block/fetchblock", {
+      const response = await axios.get(" https://ravyn-backend.onrender.com/api/block/fetchblock", {
         params: { userId: user._id }
       })
       setBlocked(response.data);
@@ -96,7 +96,7 @@ export default function SettingsPage() {
         .filter(([_, checked]) => checked)
         .map(([name]) => name);
 
-      await axios.put("http://localhost:8080/api/user/update-interests", {
+      await axios.put(" https://ravyn-backend.onrender.com/api/user/update-interests", {
         userId: user._id,
         interests: activeInterests
       });

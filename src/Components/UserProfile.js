@@ -33,7 +33,7 @@ function UserProfile() {
  const checkFollowed = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:8080/api/follow/check",
+      " https://ravyn-backend.onrender.com/api/follow/check",
       {
         params: {
           follower: user.userName,
@@ -53,7 +53,7 @@ function UserProfile() {
 const unfollowUser=async()=>{
   setDisableBtn(true);
   try{
-    const response =await axios.delete("http://localhost:8080/api/unfollow", {
+    const response =await axios.delete(" https://ravyn-backend.onrender.com/api/unfollow", {
                   data: {
                     follower: user.userName,
                     following: username
@@ -78,7 +78,7 @@ const unfollowUser=async()=>{
     setDisableBtn(true)
     try{
       const follow={follower:user.userName,following:username};
-      const response=await axios.post("http://localhost:8080/api/follow",follow)
+      const response=await axios.post(" https://ravyn-backend.onrender.com/api/follow",follow)
       console.log("followed✅")
       checkFollowed()
     }
@@ -93,7 +93,7 @@ const unfollowUser=async()=>{
   const fetchPost = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/post/${username}`
+        ` https://ravyn-backend.onrender.com/api/post/${username}`
       );
       setUserPosts(response.data);
     } catch (e) {
@@ -105,7 +105,7 @@ const unfollowUser=async()=>{
   const fetchCurrentUser = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/users/${username}`
+        ` https://ravyn-backend.onrender.com/api/users/${username}`
       );
       setVisitedUser(response.data);
     } catch (e) {

@@ -30,7 +30,7 @@ function Sigin(props) {
   const onSubmit = async (data) => {
     delete data.otp 
     try {
-      const response = await axios.post("http://localhost:8080/api/auth/register", { user: data });
+      const response = await axios.post(" https://ravyn-backend.onrender.com/api/auth/register", { user: data });
 
       if (!response || response.status !== 200) {
         alert("Can't save");
