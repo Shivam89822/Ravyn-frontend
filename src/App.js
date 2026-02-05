@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import API_URL from "./config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,15 +45,20 @@ function App() {
   const conversationsRef = useRef([]);
   conversationsRef.current = conversations;
 
-  const fetchConversation = async () => {
-    try {
-      const response = await axios.get(
-        `https://ravyn-backend.onrender.com/api/fetchConversation`,
-        { params: { userId: user._id } }
-      );
-      dispatch(setConversations(response.data));
-    } catch {}
-  };
+ const fetchConversation = useCallback(async () => {
+  if (!user?._id) return;
+
+  try {
+    const response = await axios.get(
+      "https://ravyn-backend.onrender.com/api/fetchConversation",
+      { params: { userId: user._id } }
+    );
+    dispatch(setConversations(response.data));
+  } catch (err) {
+    console.error(err);
+  }
+}, [dispatch, user?._id]);
+
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -82,17 +87,18 @@ function App() {
     if (!isAuthChecked) verifyUser();
   }, [dispatch, isAuthChecked]);
 
-  useEffect(() => {
-    if (!isAuthChecked) return;
+ useEffect(() => {
+  if (!isAuthChecked) return;
 
-    if (isAuthenticated && user?._id) {
-      if (!socket.connected) socket.connect();
-      socket.emit("user-online", user._id);
-      fetchConversation();
-    } else {
-      if (socket.connected) socket.disconnect();
-    }
-  }, [isAuthenticated, isAuthChecked, user?._id]);
+  if (isAuthenticated && user?._id) {
+    if (!socket.connected) socket.connect();
+    socket.emit("user-online", user._id);
+    fetchConversation();
+  } else {
+    if (socket.connected) socket.disconnect();
+  }
+}, [isAuthenticated, isAuthChecked, user?._id, fetchConversation]);
+
 
   useEffect(() => {
     const handleMsg = (msg) => {

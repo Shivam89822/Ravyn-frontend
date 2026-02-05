@@ -13,7 +13,7 @@ emailjs.init('ctXygJkKLayqZOPO9');
 function Login(props) {
 const navigate = useNavigate();
 const dispatch=useDispatch();
-const [isActive,setIsActive]=useState(true)
+const [isActive,setIsActive]=useState(false)
 
 
      const {
@@ -80,7 +80,7 @@ const [isActive,setIsActive]=useState(true)
           />
         </div>
        
-        <div className='sigin-input-box'><button onClick={()=>{setIsActive(false)}} disabled={isActive}  className='create-btn pink-theme-button' type='submit'>Login</button></div>
+        <div className='sigin-input-box'><button  disabled={isActive}  className='create-btn pink-theme-button' type='submit'>Login</button></div>
 
         <div className='have-acc-text'>
           Create new account! <span onClick={()=>{
