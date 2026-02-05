@@ -1,5 +1,6 @@
 
 import React, { useEffect, useRef } from "react";
+import API_URL from "./config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, clearUser } from "./features/user/UserSlice";
@@ -37,7 +38,6 @@ import Notifications from "./newComponents/Notifications";
 
 function App() {
   const dispatch = useDispatch();
-  const API_URL = import.meta.env.REACT_APP_API_URL;
   const { isAuthenticated, isAuthChecked } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user.user);
   const conversations = useSelector((state) => state.conversations.conversations);
@@ -48,7 +48,7 @@ function App() {
   const fetchConversation = async () => {
     try {
       const response = await axios.get(
-        `${API_URL}/api/fetchConversation`,
+        `https://ravyn-backend.onrender.com/api/fetchConversation`,
         { params: { userId: user._id } }
       );
       dispatch(setConversations(response.data));

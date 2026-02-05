@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from "axios"
 import './Sigin.css'
 import emailjs from 'emailjs-com';
@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess, logout, authChecked } from '../features/user/AuthSlice';
 
-
+import API_URL from "../config";
 emailjs.init('ctXygJkKLayqZOPO9');
 function Login(props) {
 const navigate = useNavigate();
 const dispatch=useDispatch();
-const API_URL = import.meta.env.REACT_APP_API_URL;
+const [isActive,setIsActive]=useState(true)
+
 
      const {
         register,
@@ -25,7 +26,7 @@ const API_URL = import.meta.env.REACT_APP_API_URL;
 
   const onSubmit = async(data) =>{
     try{
-      const response=await axios.post(` ${API_URL}/api/auth/login`,{
+      const response=await axios.post(`https://ravyn-backend.onrender.com/api/auth/login`,{
         user:data
       })
       if(!response){
@@ -79,12 +80,13 @@ const API_URL = import.meta.env.REACT_APP_API_URL;
           />
         </div>
        
-        <div className='sigin-input-box'><button  className='create-btn pink-theme-button' type='submit'>Login</button></div>
+        <div className='sigin-input-box'><button onClick={()=>{setIsActive(false)}} disabled={isActive}  className='create-btn pink-theme-button' type='submit'>Login</button></div>
 
         <div className='have-acc-text'>
           Create new account! <span onClick={()=>{
             props.setCheckLogin(false)
             props.setCheckSigin(true)
+            
           }}>Create Account</span>
         </div>
       </form>     

@@ -1,4 +1,6 @@
+
 import React, { useRef, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import './CompleteProfile.css';
 import { Camera } from "lucide-react";
@@ -8,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import { setUser, clearUser,updateUser } from '../features/user/UserSlice'; // Adjust path if needed
 import Loader from './Loader';
-
+import API_URL from "../config";
 function CompleteProfile() {
- const API_URL = import.meta.env.REACT_APP_API_URL;
+ 
   const {
     register,
     handleSubmit,
@@ -87,7 +89,7 @@ function CompleteProfile() {
       data.intrests = intrest; // Attach the array of interests
       data.isFirstLogin=false;
 
-      const response=await axios.patch(` ${API_URL}/api/users/${user._id}`, data);
+      const response=await axios.patch(`https://ravyn-backend.onrender.com/api/users/${user._id}`, data);
       // alert("User updated successfully");
       dispatch(updateUser(response.data))
       console.log(response.data)

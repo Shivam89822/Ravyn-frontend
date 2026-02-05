@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser, clearUser,updateUser } from '../features/user/UserSlice'; // Adjust path if needed
 import Loader from './Loader';
-
+import API_URL from "../config";
 export default function CreatePost(props) {
 
   const dispatch=useDispatch()
