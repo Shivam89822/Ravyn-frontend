@@ -3,8 +3,6 @@ import axios from "axios";
 const defaultApiBaseUrl = "https://ravyn-backend.onrender.com";
 const hostname =
   typeof window !== "undefined" ? window.location.hostname : "localhost";
-const protocol =
-  typeof window !== "undefined" ? window.location.protocol : "http:";
 const apiBaseUrl =
   process.env.REACT_APP_API_BASE_URL || defaultApiBaseUrl;
 

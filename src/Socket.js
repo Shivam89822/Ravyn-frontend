@@ -3,8 +3,6 @@ import { io } from "socket.io-client";
 const defaultSocketUrl = "https://ravyn-backend.onrender.com";
 const hostname =
   typeof window !== "undefined" ? window.location.hostname : "localhost";
-const protocol =
-  typeof window !== "undefined" ? window.location.protocol : "http:";
 const socketUrl =
   process.env.REACT_APP_SOCKET_URL || defaultSocketUrl;
 
