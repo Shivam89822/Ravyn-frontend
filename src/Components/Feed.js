@@ -150,15 +150,39 @@ const fetchSuggestions = useCallback(async () => {
   }, [hasMoreViral, loader, user, viralCursor]);
 
   useEffect(() => {
-    if (user) {
-      setFeed([]);
-      setCursorTime(null);
-      setHasMore(true);
-      fetchFeed();
-      fetchStatus();
-      fetchSuggestions();
-    }
-  }, [user, fetchFeed, fetchStatus, fetchSuggestions]);
+    if (!user?._id) return;
+
+    setFeed([]);
+    setCursorTime(null);
+    setHasMore(true);
+    setViralCursor(null);
+    setHasMoreViral(true);
+    fetchStatus();
+    fetchSuggestions();
+    api.get("/api/post/feed", {
+      params: {
+        limit: 5,
+        userName: user.userName,
+        cursor_time: null,
+      },
+    })
+      .then((response) => {
+        const { posts, nextCursor } = response.data;
+
+        if (!posts || posts.length === 0) {
+          setHasMore(false);
+          return;
+        }
+
+        setFeed(posts);
+        setCursorTime(nextCursor);
+      })
+      .catch((e) => {
+        console.log(e.response?.data?.message || "Backend Error");
+      });
+  // This effect should only reset the feed when the active user changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?._id]);
 
  useEffect(() => {
   if (!bottomRef.current || !user) return;
