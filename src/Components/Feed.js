@@ -18,19 +18,19 @@ function Feed() {
   const [feed, setFeed] = useState([]);
   const [cursorTime, setCursorTime] = useState(null);
   const [loader, setLoader] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [shareBox,setShareBox]=useState(false)
   const [statusPreview,setStatusPreview]=useState(null);
   const [status,setStatus]=useState([])
   const statusFileRef=useRef(null);
   const navigate=useNavigate();
-  const [viralCursor, setViralCursor] = useState(null);
-  const [hasMoreViral,setHasMoreViral]=useState(true);
   const [suggestion,setSuggestion]=useState([]);
   
 
   const bottomRef = useRef(null);
   const observerRef = useRef(null);
+  const isFetchingRef = useRef(false);
   // const [isComment,setIsComment]=useState(false);
 
   const handleStatusClick=()=>{
@@ -73,43 +73,54 @@ const fetchSuggestions = useCallback(async () => {
   return () => dispatch(showBottomNav());
 }, [currPost, dispatch]);
 
-  const fetchFeed = useCallback(async () => {
-    if (!user || loader || !hasMore) return; 
+  const fetchFeedPage = useCallback(async ({ nextCursor = null, replace = false } = {}) => {
+    if (!user?.userName || isFetchingRef.current) return;
 
-    setLoader(true);
+    isFetchingRef.current = true;
+    if (replace) {
+      setInitialLoading(true);
+    } else {
+      setLoader(true);
+    }
 
     try {
-      const response = await api.get(
-        "/api/post/feed",
-        {
-          params: {
-            limit: 5,
-            userName: user.userName,
-            cursor_time: cursorTime
-          }
+      const response = await api.get("/api/post/feed", {
+        params: {
+          limit: 5,
+          userName: user.userName,
+          cursor_time: nextCursor,
         }
-      );
+      });
 
-      const { posts, nextCursor } = response.data;
+      const { posts, nextCursor: incomingCursor } = response.data;
 
       if (!posts || posts.length === 0) {
         setHasMore(false);
+        if (replace) {
+          setFeed([]);
+        }
         return;
       }
 
-      setFeed(prev => {
-        const existingIds = new Set(prev.map(p => p._id));
-        const uniqueNewPosts = posts.filter(p => !existingIds.has(p._id));
+      setHasMore(true);
+      setFeed((prev) => {
+        if (replace) {
+          return posts;
+        }
+
+        const existingIds = new Set(prev.map((p) => p._id));
+        const uniqueNewPosts = posts.filter((p) => !existingIds.has(p._id));
         return [...prev, ...uniqueNewPosts];
       });
-      setCursorTime(nextCursor);
-      
+      setCursorTime(incomingCursor || null);
     } catch (e) {
       console.log(e.response?.data?.message || "Backend Error");
     } finally {
+      isFetchingRef.current = false;
+      setInitialLoading(false);
       setLoader(false);
     }
-  }, [cursorTime, hasMore, loader, user]);
+  }, [user?.userName]);
 
   const followUser=async(userName)=>{
     try{
@@ -123,69 +134,21 @@ const fetchSuggestions = useCallback(async () => {
     }
   }
 
-  const fetchViralFeed = useCallback(async () => {
-    if (!user || loader || !hasMoreViral) return; 
-
-    setLoader(true);
-    try{
-      const response =await api.get("/api/post/fetchviralreel",{params:{viralCursor:viralCursor}});
-      const { reels, nextCursor } = response.data;
-      if (!reels || reels.length < 3) {
-      
-        setHasMoreViral(false);
-        return;
-      }
-      setFeed(prev => {
-        const existingIds = new Set(prev.map(p => p._id));
-        const uniqueNewPosts = reels.filter(p => !existingIds.has(p._id));
-        return [...prev, ...uniqueNewPosts];
-      });
-      setViralCursor(nextCursor);
-
-    }catch(e){
-      console.log(e.response?.data?.message);
-    }finally{
-      setLoader(false)
-    }
-  }, [hasMoreViral, loader, user, viralCursor]);
-
   useEffect(() => {
     if (!user?._id) return;
 
     setFeed([]);
     setCursorTime(null);
     setHasMore(true);
-    setViralCursor(null);
-    setHasMoreViral(true);
     fetchStatus();
     fetchSuggestions();
-    api.get("/api/post/feed", {
-      params: {
-        limit: 5,
-        userName: user.userName,
-        cursor_time: null,
-      },
-    })
-      .then((response) => {
-        const { posts, nextCursor } = response.data;
-
-        if (!posts || posts.length === 0) {
-          setHasMore(false);
-          return;
-        }
-
-        setFeed(posts);
-        setCursorTime(nextCursor);
-      })
-      .catch((e) => {
-        console.log(e.response?.data?.message || "Backend Error");
-      });
+    fetchFeedPage({ nextCursor: null, replace: true });
   // This effect should only reset the feed when the active user changes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?._id]);
 
  useEffect(() => {
-  if (!bottomRef.current || !user) return;
+  if (!bottomRef.current || !user || !feed.length || !hasMore) return;
 
   if (observerRef.current) {
     observerRef.current.disconnect();
@@ -193,12 +156,8 @@ const fetchSuggestions = useCallback(async () => {
 
   observerRef.current = new IntersectionObserver(
     ([entry]) => {
-      if (entry.isIntersecting && !loader&&hasMoreViral) {
-        if (hasMore) {
-          fetchFeed();
-        } else if (hasMoreViral) {
-          fetchViralFeed();
-        }
+      if (entry.isIntersecting && !loader && !initialLoading && hasMore) {
+        fetchFeedPage({ nextCursor: cursorTime, replace: false });
       }
     },
     {
@@ -211,7 +170,7 @@ const fetchSuggestions = useCallback(async () => {
   observerRef.current.observe(bottomRef.current);
 
   return () => observerRef.current?.disconnect();
-}, [user, hasMore, hasMoreViral, loader, fetchFeed, fetchViralFeed]);
+}, [user, feed.length, hasMore, loader, initialLoading, cursorTime, fetchFeedPage]);
 
 
   return (
@@ -254,9 +213,9 @@ const fetchSuggestions = useCallback(async () => {
             </div>}
             {shareBox&&<ShareBox setPost={setCurrPost} post={currPost} setShareBox={setShareBox}/>}
             
-          {loader && <FeedLoader />}
+          {(initialLoading || loader) && <FeedLoader />}
 
-          {(hasMore || hasMoreViral) && <div ref={bottomRef} style={{ height: "1px" }} />}
+          {hasMore && <div ref={bottomRef} style={{ height: "1px" }} />}
 
         </div>
       </div>
