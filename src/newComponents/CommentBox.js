@@ -3,7 +3,7 @@ import "./CommentBox.css";
 import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
 import { Play,Heart } from "lucide-react";
-
+import api from "../utils/axios.js";
 function CommentBox({post,setPost}) {
  const [commentValue, setCommentValue] = useState("");
   const user = useSelector((state) => state.user.user);
@@ -17,7 +17,7 @@ function CommentBox({post,setPost}) {
 
   const likeComment = async (commentId) => {
   try {
-    await axios.post("http://localhost:8080/api/post/likeComment", {
+    await api.post("/api/post/likeComment", {
       userId: user._id,
       commentId
     });
@@ -36,7 +36,7 @@ function CommentBox({post,setPost}) {
 
 const dislikeComment = async (commentId) => {
   try {
-    await axios.post("http://localhost:8080/api/post/unlikeComment", {
+    await api.post("/api/post/unlikeComment", {
       userId: user._id,
       commentId
     });
@@ -57,8 +57,8 @@ const dislikeComment = async (commentId) => {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/post/fetchComment",
+      const response = await api.get(
+        "/api/post/fetchComment",
         {
           params: { postId: post._id ,userId:user._id}
         }
@@ -75,7 +75,7 @@ const dislikeComment = async (commentId) => {
 
     setIsPosting(true);
     try {
-      await axios.post("http://localhost:8080/api/post/comment", {
+      await api.post("/api/post/comment", {
         user: user._id,
         post: post._id,
         text: commentValue

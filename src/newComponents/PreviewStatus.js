@@ -12,7 +12,7 @@ import {
   X
 } from "lucide-react";
 import Loader from "../Components/Loader";
-
+import api from "../utils/axios.js";
 function PreviewStatus({statusRef, status, setStatus}) {
   const [draftText, setDraftText] = useState("");
   const [activeElement, setActiveElement] = useState(null);
@@ -20,6 +20,7 @@ function PreviewStatus({statusRef, status, setStatus}) {
   const [activetab, setActiveTab] = useState("text");
   const [colorVal, setColorVal] = useState("#000000");
   const [opacity, setOpacity] = useState(1);
+  const [privacy,setPrivacy]=useState('followers')
   const [fontSize, setFontSize] = useState(5); // Stored as percentage of container width
   const [fontFamily, setFontFamily] = useState("Arial, sans-serif");
   const [mainBackgroud, setMainBackgroud] = useState("#000000");
@@ -40,7 +41,7 @@ function PreviewStatus({statusRef, status, setStatus}) {
 
   const addStatus = async () => {
     setIsLoader(true);
-    const data = { backgroundColor: mainBackgroud };
+    const data = { backgroundColor: mainBackgroud ,privacy:privacy};
     const profile = statusRef.current?.files[0];
 
     if (profile) {
@@ -66,13 +67,13 @@ function PreviewStatus({statusRef, status, setStatus}) {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/status/post", {
+      await api.post("/api/status/post", {
         userId: user._id,
         elements: elements,
         data: data,
       });
       console.log("status saved ✅");
-      setStatus(null); // Close preview after success
+      setStatus(null); 
     } catch (e) {
       alert(e.response?.data?.message || "Internal Server Error");
     } finally {
@@ -348,6 +349,14 @@ function PreviewStatus({statusRef, status, setStatus}) {
         )}
 
         <div className="bottom-main-box">
+          <div class="privacy-select">
+            <select value={privacy} onChange={(e)=>{setPrivacy(e.target.value)}}>
+              <option value="followers">Followers</option>
+              <option value="public">Public</option>
+              <option value="close_friends">Close Friends</option>
+            </select>
+          </div>
+         
           <button className="share-btn" onClick={addStatus}>Share</button>
           <button className="close2-btn" onClick={() => setStatus(null)}>Close</button>
         </div>

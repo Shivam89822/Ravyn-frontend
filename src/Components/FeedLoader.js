@@ -1,5 +1,5 @@
 import "./FeedLoader.css";
-
+import api from "../utils/axios.js";
 const FeedLoader = () => {
   return (
     <div className="feed-loader-wrapper">

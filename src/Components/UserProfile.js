@@ -4,7 +4,7 @@ import axios from "axios";
 import Loader from "./Loader";
 import "./UserProfile.css";
 import { useDispatch, useSelector } from 'react-redux';
-
+import api from "../utils/axios.js";
 import {
   User,
   Plus,
@@ -32,8 +32,8 @@ function UserProfile() {
 
  const checkFollowed = async () => {
   try {
-    const response = await axios.get(
-      "http://localhost:8080/api/follow/check",
+    const response = await api.get(
+      "/api/follow/check",
       {
         params: {
           follower: user.userName,
@@ -53,7 +53,7 @@ function UserProfile() {
 const unfollowUser=async()=>{
   setDisableBtn(true);
   try{
-    const response =await axios.delete("http://localhost:8080/api/unfollow", {
+    const response =await api.delete("/api/follow/unfollow", {
                   data: {
                     follower: user.userName,
                     following: username
@@ -78,8 +78,8 @@ const unfollowUser=async()=>{
     setDisableBtn(true)
     try{
       const follow={follower:user.userName,following:username};
-      const response=await axios.post("http://localhost:8080/api/follow",follow)
-      console.log("followed✅")
+      const response=await api.post("/api/follow",follow)
+     
       checkFollowed()
     }
     catch(e){
@@ -92,8 +92,8 @@ const unfollowUser=async()=>{
 
   const fetchPost = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/post/${username}`
+      const response = await api.get(
+        `/api/post/${username}`
       );
       setUserPosts(response.data);
     } catch (e) {
@@ -104,10 +104,11 @@ const unfollowUser=async()=>{
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/users/${username}`
+      const response = await api.get(
+        `/api/user/${username}`
       );
       setVisitedUser(response.data);
+      console.log(response.data);
     } catch (e) {
       console.log(e.response?.data?.error || "Backend error");
     }

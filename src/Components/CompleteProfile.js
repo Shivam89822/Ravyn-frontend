@@ -4,6 +4,7 @@ import './CompleteProfile.css';
 import { Camera } from "lucide-react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import api from "../utils/axios.js";
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import { setUser, clearUser,updateUser } from '../features/user/UserSlice'; // Adjust path if needed
@@ -19,6 +20,14 @@ function CompleteProfile() {
 
   // --- STATE ---
   const [intrest, setIntrest] = useState([]);
+  const categories = [
+  "ai","anime","art","automobile","business","coding","comedy",
+  "education","entertainment","fashion","finance","fitness","food",
+  "gaming","health","history","lifestyle","memes","motivation",
+  "movies","music","nature","news","photography","politics",
+  "science","spirituality","sports","startup","technology",
+  "travel","other"
+];
   const [currIntrest, setCurrIntrest] = useState("");
   const [profilePreview, setProfilePreview] = useState(null);
   const [isComplete,setIsComplete]=useState(false)
@@ -87,7 +96,7 @@ function CompleteProfile() {
       data.intrests = intrest; // Attach the array of interests
       data.isFirstLogin=false;
 
-      const response=await axios.patch(`http://localhost:8080/api/users/${user._id}`, data);
+      const response=await api.patch(`/api/user/${user._id}`, data);
       // alert("User updated successfully");
       dispatch(updateUser(response.data))
       console.log(response.data)
@@ -207,20 +216,24 @@ function CompleteProfile() {
             </div>
             
             <div className='add-intrest-wrapper'>
-              <input
-                placeholder='e.g., Photography'
+              <select
                 value={currIntrest}
                 onChange={(e) => setCurrIntrest(e.target.value)}
                 className='input-field interest-input'
-                type="text"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') addItem(e);
-                }}
-              />
+              >
+                <option value="">Select Interest</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>
+                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </option>
+                ))}
+              </select>
+
               <button 
                 type="button" 
                 className='add-button' 
                 onClick={addItem}
+                disabled={!currIntrest}
               >
                 Add
               </button>

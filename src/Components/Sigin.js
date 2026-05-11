@@ -8,7 +8,7 @@ import { setUser, clearUser, updateUser } from '../features/user/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess, logout, authChecked } from '../features/user/AuthSlice';
-
+import api from "../utils/axios.js";
 emailjs.init('ctXygJkKLayqZOPO9');
 
 function Sigin(props) {
@@ -30,7 +30,12 @@ function Sigin(props) {
   const onSubmit = async (data) => {
     delete data.otp 
     try {
-      const response = await axios.post("http://localhost:8080/api/auth/register", { user: data });
+      console.log("[register] submit", {
+        email: data.email,
+        userName: data.userName,
+        apiBaseUrl: api.defaults.baseURL,
+      });
+      const response = await api.post("/api/auth/register", { user: data },{withCredentials:true});
 
       if (!response || response.status !== 200) {
         alert("Can't save");
@@ -38,9 +43,9 @@ function Sigin(props) {
       }
       alert("Saved successfully!");
       const user=response.data.user
-      const token=response.data.token
+      // const token=response.data.token
       user['isVerified']=true;
-      localStorage.setItem("token", token);
+      // localStorage.setItem("token", token);
       console.log(user)
       dispatch(setUser(user))
       dispatch(logout())
@@ -48,6 +53,13 @@ function Sigin(props) {
       
            
     } catch (e) {
+      console.error("[register] failed", {
+        email: data.email,
+        userName: data.userName,
+        apiBaseUrl: api.defaults.baseURL,
+        status: e.response?.status || null,
+        message: e.response?.data?.error || e.message,
+      });
       const msg = e.response?.data?.error || "Backend error";
       alert(msg);
 

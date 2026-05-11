@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useRef, useState } from "react";
 import { Ban, X } from "lucide-react";
-
+import api from "../utils/axios.js";
 import "./BlockReason.css"
 function BlockReason({ onClose, onConfirm }) {
 

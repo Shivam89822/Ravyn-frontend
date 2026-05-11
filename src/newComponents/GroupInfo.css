@@ -1,0 +1,550 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.gi-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #0a0e27 0%, #0f1438 50%, #141d3f 100%);
+  color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  overflow: hidden;
+}
+
+.gi-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.15);
+  background: rgba(10, 14, 39, 0.6);
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+
+.gi-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(139, 92, 246, 0.12);
+  color: #a78bfa;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.gi-back-btn:hover {
+  background: rgba(139, 92, 246, 0.22);
+  transform: translateX(-2px);
+}
+
+.gi-back-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gi-title {
+  font-size: 17px;
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+  letter-spacing: -0.4px;
+}
+
+.gi-header-space {
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.gi-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.gi-scrollable::-webkit-scrollbar {
+  width: 5px;
+}
+
+.gi-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gi-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.25);
+  border-radius: 3px;
+}
+
+.gi-scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.4);
+}
+
+.gi-hero {
+  padding: 32px 20px 28px;
+  text-align: center;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.1);
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, transparent 100%);
+}
+
+.gi-image-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 20px;
+}
+
+.gi-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(139, 92, 246, 0.35);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2), inset 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.gi-camera-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid #0a0e27;
+  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.45);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gi-camera-overlay:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(167, 139, 250, 0.6);
+}
+
+.gi-camera-overlay:active {
+  transform: scale(0.95);
+}
+
+.gi-camera-overlay svg {
+  width: 20px;
+  height: 20px;
+}
+
+.gi-hero-content {
+  margin-top: 8px;
+}
+
+.gi-name-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.gi-group-title {
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.gi-edit-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(139, 92, 246, 0.18);
+  color: #a78bfa;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.gi-edit-btn:hover {
+  background: rgba(139, 92, 246, 0.28);
+  transform: scale(1.08);
+}
+
+.gi-edit-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.gi-created-info {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+.gi-members {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.1);
+}
+
+.gi-members-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.gi-members-header h3 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #cbd5e1;
+}
+
+.gi-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.gi-members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.gi-members-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.gi-members-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gi-members-list::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.25);
+  border-radius: 3px;
+}
+
+.gi-member-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 10px;
+  border-radius: 10px;
+  transition: all 0.2s;
+  cursor: pointer;
+  background: rgba(139, 92, 246, 0);
+}
+
+.gi-member-item:hover {
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.gi-member-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(139, 92, 246, 0.2);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.gi-member-item:hover .gi-member-avatar {
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.gi-member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.gi-member-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gi-member-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e2e8f0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gi-admin-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.16);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+.gi-member-options {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.gi-member-options:hover {
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+}
+
+.gi-member-options svg {
+  width: 18px;
+  height: 18px;
+}
+
+.gi-divider {
+  height: 1px;
+  background: rgba(100, 116, 139, 0.1);
+}
+
+.gi-actions {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gi-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gi-action-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.gi-action-primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+}
+
+.gi-action-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+}
+
+.gi-action-primary:active {
+  transform: translateY(0);
+}
+
+.gi-action-danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.gi-action-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.35);
+  transform: translateY(-2px);
+}
+
+.gi-action-danger:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .gi-hero {
+    padding: 24px 16px 20px;
+  }
+
+  .gi-image-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .gi-group-title {
+    font-size: 22px;
+  }
+
+  .gi-members {
+    padding: 20px 16px;
+  }
+
+  .gi-members-list {
+    max-height: 280px;
+  }
+
+  .gi-actions {
+    padding: 16px;
+    gap: 8px;
+  }
+
+  .gi-action-btn {
+    padding: 11px 18px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gi-header {
+    padding: 12px 12px;
+  }
+
+  .gi-title {
+    font-size: 16px;
+  }
+
+  .gi-hero {
+    padding: 20px 12px 16px;
+  }
+
+  .gi-image-container {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 16px;
+  }
+
+  .gi-group-title {
+    font-size: 20px;
+  }
+
+  .gi-created-info {
+    font-size: 12px;
+  }
+
+  .gi-members {
+    padding: 16px 12px;
+  }
+
+  .gi-member-item {
+    padding: 9px 8px;
+    gap: 10px;
+  }
+
+  .gi-member-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .gi-member-name {
+    font-size: 13px;
+  }
+
+  .gi-actions {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .gi-action-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .gi-action-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* container for options button + dropdown */
+.gi-member-actions{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* three-dot button */
+.gi-member-options{
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.gi-member-options:hover{
+  background: #f0f0f0;
+}
+
+/* dropdown menu */
+.gi-dropdown{
+  position: absolute;
+  right: 0;
+  top: 32px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  overflow: hidden;
+  z-index: 100;
+  min-width: 120px;
+}
+
+/* remove user button */
+.gi-remove-btn{
+  width: 100%;
+  border: none;
+  background: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  color: #e53935;
+}
+
+.gi-remove-btn:hover{
+  background: #f5f5f5;
+}

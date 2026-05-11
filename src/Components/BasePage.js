@@ -1,5 +1,6 @@
 import React, { useState ,useEffect} from 'react';
 import "./BasePage.css";
+import api from "../utils/axios.js";
 import SideNavBar from './SideNavBar';
 import CreatePost from './CreatePost';
 import SearchNavBar from './SearchNavBar';
@@ -21,6 +22,19 @@ function BasePage() {
   const showBottomNav = useSelector((state) => state.ui.showBottomNav);
 
   const isReelsPage = location.pathname === "/home/reels";
+  const hideBottomNavRoutes = [
+  "/home/user-profile/edit-profile"
+];
+
+const shouldHideBottomNav = hideBottomNavRoutes.includes(location.pathname);
+useEffect(() => {
+  if (shouldHideBottomNav) {
+    dispatch(hideBottomNav());
+  } else {
+    dispatch(showBottomNavAction());
+  }
+}, [shouldHideBottomNav, dispatch]);
+
   
 //   useEffect(() => {
 //   if (location.pathname === "/home/reels") {

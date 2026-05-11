@@ -7,6 +7,7 @@ import PostCard from "./PostCard";
 import FeedLoader from "./FeedLoader";
 import CommentBox from "../newComponents/CommentBox";
 import { Plus } from "lucide-react";
+import api from "../utils/axios.js";
 import ShareBox from "../newComponents/ShareBox";
 import PreviewStatus from "../newComponents/PreviewStatus";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +27,8 @@ function Feed() {
   const navigate=useNavigate();
   const [viralCursor, setViralCursor] = useState(null);
   const [hasMoreViral,setHasMoreViral]=useState(true);
+  const [userStatus,setUserStatus]=useState([]);
+  const [suggestion,setSuggestion]=useState([]);
   
 
   const bottomRef = useRef(null);
@@ -36,13 +39,47 @@ function Feed() {
     statusFileRef.current.click();
   }
 
+const fetchSuggestions = async () => {
+  try {
+    const response = await api.get(
+      "/api/user/friend-suggestions",
+      {
+        params: { userId: user._id }
+      }
+    );
+    setSuggestion(response.data);
+
+  } catch (e) {
+    console.log(e.response?.data?.message || "Error fetching suggestions");
+  }
+};
+
+
+  const fetchUnFollowed=async()=>{
+    try{
+      const response =await api.get("",{
+        params:{userId:user._id}
+      })
+    }
+    catch(e){
+      console.log(e.response?.data?.message||"Backend error")
+    }
+  }
 
   const fetchStatus=async(req,res)=>{
     try{
-      const response =await axios.get("http://localhost:8080/api/status/get",{
+      const response =await api.get("/api/status/get",{
         params:{userId:user._id}
       });
     setStatus(response.data);
+    const data=response.data;
+    data.forEach(element => {
+      if(element.user._id==user._id){
+        setUserStatus(prev=>[...prev,element]);
+        console.log("found")
+      }
+    });
+   
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
     }
@@ -67,8 +104,8 @@ function Feed() {
     setLoader(true);
 
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/user/feed",
+      const response = await api.get(
+        "/api/post/feed",
         {
           params: {
             limit: 5,
@@ -99,12 +136,24 @@ function Feed() {
     }
   };
 
+  const followUser=async(userName)=>{
+    try{
+      await api.post("/api/follow",{
+        follower:user.userName,following:userName
+      });
+      const newSuggestion = suggestion.filter(item => item.userName !== userName);
+      setSuggestion(newSuggestion);
+    }catch(e){
+      console.log(e.response?.data?.message);
+    }
+  }
+
   const fetchViralFeed=async()=>{
     if (!user || loader || !hasMoreViral) return; 
 
     setLoader(true);
     try{
-      const response =await axios.get("http://localhost:8080/api/post/fetchviralreel",{params:{viralCursor:viralCursor}});
+      const response =await api.get("/api/post/fetchviralreel",{params:{viralCursor:viralCursor}});
       const { reels, nextCursor } = response.data;
       if (!reels || reels.length < 3) {
       
@@ -132,6 +181,7 @@ function Feed() {
       setHasMore(true);
       fetchFeed();
       fetchStatus();
+      fetchSuggestions();
     }
   }, [user]);
 
@@ -216,50 +266,20 @@ function Feed() {
 
         <div className="suggestion-box">
           <div className="suggest-message">SUGGESTED FOR YOU</div>
-          <div>
-            <div className="follow-suggestion-item"> 
-              <div className="prof-holder-circle"></div>
+          {suggestion.map((item,key)=>(
+              <div className="follow-suggestion-item"> 
+              <div className="prof-holder-circle">{item.profilePictureUrl.length>0&&<img style={{height:'100%',width:'100%',borderRadius:"50%"}} src={item.profilePictureUrl} alt="" />}</div>
               <div>
-                <div>mike_dev</div>
-                <div className="followed-by-text">followed by alex_photo</div>
+                <div>{item.fullName}</div>
+                <div className="followed-by-text">suggested for you</div>
               </div>
               <div>
-                <button className="follow-btn">follow</button>
-              </div>
-            </div>
-             <div className="follow-suggestion-item"> 
-              <div className="prof-holder-circle"></div>
-              <div>
-                <div>mike_dev</div>
-                <div className="followed-by-text">followed by alex_photo</div>
-              </div>
-              <div>
-                <button className="follow-btn">follow</button>
+                <button className="follow-btn" onClick={()=>{followUser(item.userName)}}>follow</button>
               </div>
             </div>
-             <div className="follow-suggestion-item"> 
-              <div className="prof-holder-circle"></div>
-              <div>
-                <div>mike_dev</div>
-                <div className="followed-by-text">followed by alex_photo</div>
-              </div>
-              <div>
-                <button className="follow-btn">follow</button>
-              </div>
-            </div>
-             <div className="follow-suggestion-item"> 
-              <div className="prof-holder-circle"></div>
-              <div>
-                <div>mike_dev</div>
-                <div className="followed-by-text">followed by alex_photo</div>
-              </div>
-              <div>
-                <button className="follow-btn">follow</button>
-              </div>
-            </div>
-           
 
-          </div>
+          ))}
+          {/*  */}
         </div>
         
       </div>

@@ -7,7 +7,7 @@ import axios from "axios";
 import Loader from "../Components/Loader";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import api from "../utils/axios.js";
 function EditProfile() {
   const [tags, setTags] = useState([]);
   const [interests, setInterest] = useState("");
@@ -51,8 +51,8 @@ function EditProfile() {
       data.profilePicturePublicId = response.data.public_id;
     }
 
-    const response = await axios.patch(
-      `http://localhost:8080/api/users/${user._id}`,
+    const response = await api.patch(
+      `/api/users/${user._id}`,
       data
     );
 

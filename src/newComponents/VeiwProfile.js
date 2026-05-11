@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import "./VeiwProfile.css"
-import { UserPen ,User, Camera,MoreVertical,Grid3X3,Film,Bookmark,Heart,MessageCircle} from "lucide-react";
+import { UserPen ,User, Camera,MoreVertical,Plus,Grid3X3,Film,Bookmark,Heart,MessageCircle,Settings} from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import "../Components/UserProfile.css"
 import axios from "axios"
+import api from "../utils/axios.js";
 import { useNavigate } from 'react-router-dom';
+import CreatePost from '../Components/CreatePost';
 function VeiwProfile() {
   const user = useSelector((state) => state.user.user);
   const [userPosts, setUserPosts] = useState([]);
   const [savedPost,setSavedPost]=useState([]);
+   const [showCreatePost, setShowCreatePost] = useState(false);
   const navigate=useNavigate();  
 
   const [activeStyle,setActiveStyle]=useState({
@@ -24,8 +27,8 @@ function VeiwProfile() {
 
    const fetchPost = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/post/${user.userName}`
+      const response = await api.get(
+        `/api/post/${user.userName}`
       );
       setUserPosts(response.data);
       // console.log(response.data)
@@ -36,7 +39,7 @@ function VeiwProfile() {
 
   const fetchSavedReels=async()=>{
     try{
-      const response=await axios.get(`http://localhost:8080/api/savedpost/${user._id}`)
+      const response=await api.get(`/api/post/savedpost/${user._id}`)
       setSavedPost(response.data);
       console.log(response.data);
     }
@@ -87,6 +90,20 @@ function VeiwProfile() {
             </div>
             <div>
                 <button className='action-btn'><MoreVertical size={16} />Share Profile</button>
+                <div className='min-display-btn'>
+                 <button className="create-btn" onClick={()=>{setShowCreatePost(true)}}>
+                  <span className="create-icon">
+                    <Plus size={14} strokeWidth={3} />
+                  </span>
+                  <span className="create-text">Create</span>
+                </button>
+                   <button className="settings-btn" onClick={()=>{navigate("/home/settings")}}>
+                  <Settings size={18} />
+                  </button>
+
+                </div>
+               
+
             </div>
         </div>
       </div>
@@ -196,6 +213,15 @@ function VeiwProfile() {
 
 
       </div>
+
+       {showCreatePost && (
+                  <div className="createPost-overlay">
+                    <CreatePost
+                      onClose={() => setShowCreatePost(false)}
+                      setShowCreatePost={setShowCreatePost}
+                    />
+                  </div>
+            )}
     </div>
   )
 }

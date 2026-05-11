@@ -5,6 +5,7 @@ import myVideo from '../images/front-video.mp4';
 import Sigin from './Sigin';
 import Login from './Login';
 import { motion } from "framer-motion";
+import api from "../utils/axios.js";
 function Intropage(props) {
   const [isLiked,setIsLiked]=useState(false)
   const [isSaved,setIsSaved]=useState(false)

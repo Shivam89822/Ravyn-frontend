@@ -3,19 +3,22 @@ import { Shield, Bell, Trash2, ChevronDown, Users, Heart, Settings, Lock, Mail, 
 import './SettingsPage.css';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
+import api from "../utils/axios.js";
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('privacy');
   const [notifications, setNotifications] = useState({ push: true, email: false, messages: false });
-  const [blocked, setBlocked] = useState([])
+  const [blocked, setBlocked] = useState([]);
+  const [closeFriend,setCloseFriend]=useState([]);
   const user = useSelector((state) => state.user.user);
   const [privacyActive, setPrivacyActive] = useState(null);
   const blockRef = useRef(null);
+   const closeRef = useRef(null);
+
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:8080/api/user/notifications",
+      const res = await api.get(
+        "/api/notification/notifications",
         { params: { userId: user._id } }
       );
       setNotifications({
@@ -37,7 +40,7 @@ export default function SettingsPage() {
       
       setNotifications(updatedNotifications);
 
-      await axios.put("http://localhost:8080/api/user/update-notifications", {
+      await api.put("/api/notification/update-notifications", {
         userId: user._id,
         notifications: {
           push: updatedNotifications.push,
@@ -53,8 +56,8 @@ export default function SettingsPage() {
 
   const unBlockUser = async (blockedId) => {
     try {
-      await axios.delete(
-        "http://localhost:8080/api/block/unblockuser",
+      await api.delete(
+        "/api/block/unblockuser",
         {
           params: {
             blockerId: user._id,
@@ -77,7 +80,7 @@ export default function SettingsPage() {
 
   const fetchBlocked = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/block/fetchblock", {
+      const response = await api.get("/api/block/fetchblock", {
         params: { userId: user._id }
       })
       setBlocked(response.data);
@@ -85,6 +88,30 @@ export default function SettingsPage() {
       console.log(e);
     }
   }
+
+
+  const fetchCloseFriend = async () => {
+    try {
+      const response = await api.get("/api/user/fetch-close-friend", {
+        params: { userId: user._id }
+      });
+      setCloseFriend(response.data || []);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const removeCloseFriend = async (friendId) => {
+    try {
+      await api.post("/api/user/remove-close-friend", {
+        userId: user._id, friendId: friendId
+      });
+      fetchCloseFriend();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 
   const toggleInterest = async (interestKey) => {
     const newValue = !interests[interestKey];
@@ -96,7 +123,7 @@ export default function SettingsPage() {
         .filter(([_, checked]) => checked)
         .map(([name]) => name);
 
-      await axios.put("http://localhost:8080/api/user/update-interests", {
+      await api.put("/api/user/update-interests", {
         userId: user._id,
         interests: activeInterests
       });
@@ -105,12 +132,43 @@ export default function SettingsPage() {
     }
   };
 
-  const [interests, setInterests] = useState({
-    technology: false, sports: false, music: false, travel: false,
-    food: false, gaming: false, fitness: false, art: false,
-  });
+ const [interests, setInterests] = useState({
+  ai: false,
+  anime: false,
+  art: false,
+  automobile: false,
+  business: false,
+  coding: false,
+  comedy: false,
+  education: false,
+  entertainment: false,
+  fashion: false,
+  finance: false,
+  fitness: false,
+  food: false,
+  gaming: false,
+  health: false,
+  history: false,
+  lifestyle: false,
+  memes: false,
+  motivation: false,
+  movies: false,
+  music: false,
+  nature: false,
+  news: false,
+  photography: false,
+  politics: false,
+  science: false,
+  spirituality: false,
+  sports: false,
+  startup: false,
+  technology: false,
+  travel: false,
+  other: false
+});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteInput, setDeleteInput] = useState('');
+  const [showFriend,setShowFriend]=useState(false);
 
   const tabs = [
     { id: 'privacy', label: 'Privacy & Safety', icon: Shield },
@@ -118,6 +176,9 @@ export default function SettingsPage() {
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'danger', label: 'Account', icon: Settings },
   ];
+
+  
+    
 
   const handleDeleteAccount = () => {
     if (deleteInput.toLowerCase() === 'delete') {
@@ -130,6 +191,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (user) {
       fetchBlocked();
+      fetchCloseFriend();
       fetchNotifications();
     }
   }, [user]);
@@ -186,14 +248,25 @@ export default function SettingsPage() {
           <div className="privacy-grid animate-fadeIn">
             {[
               { title: 'Blocked Users', icon: Lock, count: blocked.length, class: 'red-card' },
-              { title: 'Restricted Users', icon: Shield, count: 2, class: 'yellow-card' },
-              { title: 'Close Friends', icon: Users, count: 3, class: 'green-card' }
+            
+              { title: 'Close Friends', icon: Users, count: closeFriend.length, class: 'green-card' }
             ].map((section, idx) => (
               <div onClick={() => {
                 if (section.class === "red-card") {
                   setPrivacyActive(prev => {
                     const next = prev === "block" ? null : "block";
                     if (next === "block") {
+                      setTimeout(() => {
+                        blockRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }, 100);
+                    }
+                    return next;
+                  });
+                }
+                else if(section.class==='green-card'){
+                  setPrivacyActive(prev => {
+                    const next = prev === "close" ? null : "close";
+                    if (next === "close") {
                       setTimeout(() => {
                         blockRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                       }, 100);
@@ -239,6 +312,24 @@ export default function SettingsPage() {
                       ))}
                     </div>
                   )}
+                  {privacyActive === "close" &&
+                  section.class === "green-card" && (
+                  <div ref={closeRef} className="block-list">
+                    {closeFriend.map(friend => (
+                      <div key={friend._id} className="block-item">
+                        <div className="block-user">
+                          <div className="block-info">
+                            <span className="block-username">@{friend.userName}</span>
+                          </div>
+                        </div>
+                        <button className="unblock-btn" onClick={() => removeCloseFriend(friend._id)}>
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
               </div>
             ))}
           </div>
@@ -276,6 +367,8 @@ export default function SettingsPage() {
             </div>
           </div>
         )}
+
+        {/*  */}
 
         {activeTab === 'notifications' && (
           <div className="animate-fadeIn" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

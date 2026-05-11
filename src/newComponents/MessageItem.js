@@ -2,7 +2,7 @@ import React from 'react'
 import "./MessageSection.css"
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-
+import api from "../utils/axios.js";
 function MessageItem({post,activeUser}) {
     const user = useSelector((state) => state.user.user);
     const navigate=useNavigate()

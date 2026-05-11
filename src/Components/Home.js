@@ -5,7 +5,7 @@ import CompleteProfile from './CompleteProfile';
 import Loader from './Loader';
 import BasePage from './BasePage';
 import CreatePost from './CreatePost';
-
+import api from "../utils/axios.js";
 function Home() {
   const user=useSelector((state)=>state.user.user);
 

@@ -3,7 +3,7 @@ import "./SearchTab.css";
 // import '../Components/UserProfile.css'
 import axios from "axios";
 import FeedLoader from "../Components/FeedLoader"
-
+import api from "../utils/axios.js";
 import {
   User,
   Plus,
@@ -26,8 +26,8 @@ function SearchTab() {
     if (isLoading || !hasMore) return;
     setIsLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/reels/search",
+      const response = await api.get(
+        "/api/post/search",
         {
           params: { cursorTime: cursorTime },
         }

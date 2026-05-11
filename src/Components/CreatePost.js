@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser, clearUser,updateUser } from '../features/user/UserSlice'; // Adjust path if needed
 import Loader from './Loader';
-
+import api from "../utils/axios.js";
 export default function CreatePost(props) {
 
   const dispatch=useDispatch()
@@ -19,6 +19,7 @@ export default function CreatePost(props) {
   const [fileType, setFileType] = useState(""); // To track if it's image or video
   const [caption, setCaption] = useState("");
   const [hashtagInput, setHashtagInput] = useState("");
+  const [category,setCategory]=useState("other")
   const [hashtags, setHashtags] = useState([]);
   const [isCommentAllowed, setIsCommentAllowed] = useState(true);
   const [isSubmited,setIsSubmited]=useState(false)
@@ -66,11 +67,12 @@ export default function CreatePost(props) {
      type:resourceType,
      userId:user._id,
      hashtags:hashtags,
+      category:category
   }
    
 
   try{
-    const response=await axios.post("http://localhost:8080/api/posts",data);
+    const response=await api.post("/api/post/posts",data);
     setIsSubmited(false)
 
   }catch(e){
@@ -197,6 +199,46 @@ export default function CreatePost(props) {
                 onChange={(e) => setHashtagInput(e.target.value)}
                 onKeyDown={handleHashtagKeyDown}
               />
+              <div className="category-wrapper">
+                <label htmlFor="category">Category</label>
+                <select id="category" name="category" value={category} onChange={(e)=>setCategory(e.target.value)}>
+                  <option value="other">Other</option>
+                  <option value="ai">AI</option>
+                  <option value="anime">Anime</option>
+                  <option value="art">Art</option>
+                  <option value="automobile">Automobile</option>
+                  <option value="business">Business</option>
+                  <option value="coding">Coding</option>
+                  <option value="comedy">Comedy</option>
+                  <option value="education">Education</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="fashion">Fashion</option>
+                  <option value="finance">Finance</option>
+                  <option value="fitness">Fitness</option>
+                  <option value="food">Food</option>
+                  <option value="gaming">Gaming</option>
+                  <option value="health">Health</option>
+                  <option value="history">History</option>
+                  <option value="lifestyle">Lifestyle</option>
+                  <option value="memes">Memes</option>
+                  <option value="motivation">Motivation</option>
+                  <option value="movies">Movies</option>
+                  <option value="music">Music</option>
+                  <option value="nature">Nature</option>
+                  <option value="news">News</option>
+                  <option value="photography">Photography</option>
+                  <option value="politics">Politics</option>
+                  <option value="romantic">Romantic</option>
+
+                  <option value="science">Science</option>
+                  <option value="spirituality">Spirituality</option>
+                  <option value="sports">Sports</option>
+                  <option value="startup">Startup</option>
+                  <option value="technology">Technology</option>
+                  <option value="travel">Travel</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
 
               <div className="hashtag-list">
                 {hashtags.map((tag, index) => (

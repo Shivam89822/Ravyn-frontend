@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./MessageSection.css";
-import { Phone, Video, Info, Send, Scale, X ,Unlock} from "lucide-react";
+import { Phone, Video, Info, Send, Scale, X ,Unlock,ArrowLeft,Users} from "lucide-react";
 import {
   Ban,
   Star,
   Shield,
 } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import socket from "../Socket";
 import { MessageCircle } from "lucide-react";
 import {
@@ -17,7 +17,7 @@ import {
   updateLastMessage,
   resetConversationState,
 } from "../features/Conversation/ConversationSlice"
-
+import api from "../utils/axios.js";
 import {
   userOnline,
   userOffline,
@@ -25,15 +25,21 @@ import {
 } from "../features/user/ActiveUserSlice"
 import MessageItem from "./MessageItem";
 import BlockReason from "./BlockReason";
+import GroupInfo from "./GroupInfo";
+import useCall from "../hooks/useCall";
 
 
 
 
 
 function MessageSection() {
+   const dispatch = useDispatch();
+  const { startVideoCall } = useCall();
+  const createConvo=useRef(false);
+  const navigate=useNavigate()
   const location = useLocation();
   const user = useSelector((state) => state.user.user);
-  const [friend, setFriend] = useState(location.state?.friendName || "");
+  const [friend, setFriend] = useState(location.state?.friendName || null);
   const [activeUser, setActiveUser] = useState(null);
   const conversations = useSelector((state) => state.conversations.conversations);
   const activeUsers = useSelector((state) => state.activeUser.activeUsers);
@@ -46,6 +52,7 @@ function MessageSection() {
   const [showBox,setShowBox]=useState(false)
   const [isBlocked,setIsBlocked]=useState(false)
   const [iBlocked,setIBlocked]=useState(false)
+  const longPressTimer = useRef(null);
   
   const [featureDesign,setFeatureDesign]=useState({
     transform:"scaleY(0)"
@@ -56,18 +63,38 @@ function MessageSection() {
   const isFetchingRef = useRef(false);
   const hasMoreRef = useRef(true);
   const overlayRef = useRef(null);
+  const [isCreateGroup,setIsCreateGroup]=useState(false);
+  const [selectedFriends, setSelectedFriends] = useState([user._id]);
+  const [groupName,setGroupName]=useState("");
+  const [isGroupUpdate,setGroupUpdate]=useState(false);
+  const [isCloseFriend,setCloseFriend]=useState(false);
+
+  const [isAmBlocked,setAmBlocked]=useState(false);
+
 
   useEffect(() => {
     conversationRef.current = conversationId;
   }, [conversationId]);
+  
+  
+
+  const handleCheckboxChange = (friendId) => {
+  setSelectedFriends((prev) => {
+    if (prev.includes(friendId)) {
+      return prev.filter((id) => id !== friendId); 
+    } else {
+      return [...prev, friendId]; 
+    }
+  });
+};
 
   const fetchMessage = async (convId, cursor) => {
     if (isFetchingRef.current || !hasMoreRef.current) return;
     isFetchingRef.current = true;
 
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/fetchMessage",
+      const response = await api.get(
+        "/api/conversation/fetchMessage",
         {
           params: {
             conversationId: convId,
@@ -80,6 +107,7 @@ function MessageSection() {
         hasMoreRef.current = false;
         return;
       }
+      console.log(response.data);
       setMessages((prev) => [...response.data, ...prev]);
       setCursorTime(response.data[0].createdAt);
     } catch (e) {
@@ -88,13 +116,61 @@ function MessageSection() {
       isFetchingRef.current = false;
     }
   };
+  
+
+  const addCloseFriend=async(friendId)=>{
+    try{
+      setCloseFriend(true);
+      await api.post("/api/user/add-close-friend",{
+        userId:user._id,friendId:friendId
+      })
+      
+    }catch(e){
+      console.log(e.response?.data?.message);
+    }
+  }
+
+   const removeCloseFriend=async(friendId)=>{
+    try{
+       setCloseFriend(false);
+      await api.post("/api/user/remove-close-friend",{
+        userId:user._id,friendId:friendId
+      })
+     
+    }catch(e){
+      console.log(e.response?.data?.message);
+    }
+  }
+  
+
+  const checkFriend = async (friendId) => {
+    try {
+      const response = await api.get(
+        "/api/user/is-close-friend",
+        {
+          params: {
+            userId: user._id,
+            friendId
+          }
+        }
+      );
+
+      setCloseFriend(response.data);
+
+     
+    } catch (e) {
+      console.log(e.response?.data?.message);
+    }
+  };
+  
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/users/${friend}`
+      const response = await api.get(
+        `/api/users/${friend}`
       );
       setActiveUser(response.data);
+      
 
     } catch (e) {
       console.log(e.response?.data?.error || "Backend error");
@@ -103,7 +179,7 @@ function MessageSection() {
 
   const blockUSer=async(reason)=>{
     try{
-      const response=axios.post("http://localhost:8080/api/block/blockuser",{blockerId:user._id,blockedId:activeUser._id,reason:reason});
+      const response=api.post("/api/block/blockuser",{blockerId:user._id,blockedId:activeUser.friendId,reason:reason});
       
       setIsBlocked(true)
 
@@ -114,12 +190,12 @@ function MessageSection() {
 
  const unBlockUser = async () => {
   try {
-    await axios.delete(
-      "http://localhost:8080/api/block/unblockuser",
+    await api.delete(
+      "/api/block/unblockuser",
       {
         params: {
           blockerId: user._id,
-          blockedId: activeUser._id,
+          blockedId: activeUser.friendId,
         },
       }
     );
@@ -133,15 +209,18 @@ function MessageSection() {
   
 
   const sendMsg = async () => {
+    
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/message/sendMessage",
+
+      const response = await api.post(
+        "/api/conversation/sendMessage",
         {
           senderId: user._id,
-          reciverId: activeUser._id,
+          conversationId: activeUser.conversationId,
           text: currMsg,
         }
       );
+      console.log("message sent response:", response.data.message);
 
       setMessages((prev) => [...prev, response.data.message]);
       socket.emit("sendMessage", {
@@ -154,38 +233,97 @@ function MessageSection() {
       console.log(e.response?.data?.message || "Backend error");
     }
   };
-
-  const fetchIsBlock=async()=>{
+// *******************************************************************
+  const videoCall=async()=>{
     try{
-      const response=await axios.get("http://localhost:8080/api/block/checkblock",{
-        params:{blockerId:user._id,blockedId:activeUser._id}
+      if (!activeUser || activeUser.isGroup) return;
+      await startVideoCall(activeUser, activeUser.conversationId);
+    }catch(e){
+      console.log(e);
+    }
+  }
+// *******************************************************************
+
+  const fetchIsBlock=async(blockerId,blockedId)=>{
+    try{
+      const response=await api.get("/api/block/checkblock",{
+        params:{blockerId:blockerId,blockedId:blockedId}
       })
-      setIsBlocked(response.data);
-      console.log(response.data)
+      if(blockerId==user._id){
+        setIsBlocked(response.data);
+      }else{
+        setAmBlocked(response.data);
+      }
+     
+    
       
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
+    }
+  }
+
+  const addGroupConversation=async()=>{
+    try{
+      if(groupName.length==0){
+        alert("enter group name");
+      }
+      await api.post("/api/conversation/add-group",{
+        admin:user._id,
+        participants:selectedFriends,
+        groupName:groupName
+      })
+    try {
+      const response = await api.get(
+        "/api/conversation/fetchConversation",
+        { params: { userId: user._id } }
+      );
+      
+      dispatch(setConversations(response.data));
+    } catch {}
+    setIsCreateGroup(false)
+    }catch(e){
+      const message=e.response?.data.message||"Internal server error";
+      console.log(message);
     }
   }
 
   const fetchIsIBlock=async()=>{
     try{
-      const response=await axios.get("http://localhost:8080/api/block/checkblock",{
+      const response=await api.get("/api/block/checkblock",{
         params:{blockerId:activeUser._id,blockedId:user._id}
       })
       setIBlocked(response.data);
-      console.log(response.data)
+      
       
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
     }
   }
+
+  const handleMouseDown = (c) => {
+  longPressTimer.current = setTimeout(() => {
+    console.log("Long press triggered", c);
+    }, 500); // 500ms long press
+  };
+
+  const handleMouseUp = () => {
+    clearTimeout(longPressTimer.current);
+  };
+
+
   useEffect(()=>{
     if(activeUser){
-      fetchIsBlock();
+      fetchIsBlock(user._id,activeUser.friendId);
+      fetchIsBlock(activeUser.friendId,user._id);
       fetchIsIBlock();
     };
-  },[activeUser])
+  },[activeUser]) 
+
+
+
+  // useEffect(()=>{
+  //   console.log(conversations)
+  // },[conversations])
 
   useEffect(() => {
     const el = messageEndRef.current;
@@ -202,21 +340,53 @@ function MessageSection() {
   }, [conversationId, cursorTime]);
 
   useEffect(() => {
+    
     if (!conversations.length) return;
     const conversationIds = conversations.map((c) => c.conversationId);
     socket.emit("joinConversations", conversationIds);
     return () => socket.emit("leaveConversations", conversationIds);
   }, [conversations]);
 
-  useEffect(() => {
-    if (friend) fetchCurrentUser();
-  }, [friend]);
+
+ const CreateConversation = async () => {  
+  
+  if(!friend)return ;
+  try {
+    const response = await api.post(
+      "/api/conversation/create",
+      {
+        senderId: user._id,
+        receiverName: friend,
+      }
+    );
+
+    setConversationId(response.data.conversationId);
+    setActiveUser(response.data);
+
+  } catch (e) {
+    // console.log(e.response?.data?.message || "Backend error");
+  }
+};
+
+
+
+useEffect(() => {
+  if (!friend) return;
+
+  if (createConvo.current) return;   
+
+  createConvo.current = true;        
+
+  CreateConversation();
+
+}, [friend]);
 
   
 
+
   useEffect(() => {
     const handleNewMessage = (msg) => {
-      if (msg.conversationId !== conversationRef.current) return;
+      // if (msg.conversationId !== conversationRef.current) return;
       setMessages((prev) => [...prev, msg]);
     };
 
@@ -225,6 +395,7 @@ function MessageSection() {
 
     return () => socket.off("newMessage", handleNewMessage);
   }, []);
+
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -246,6 +417,18 @@ function MessageSection() {
     };
   }, [close]);
 
+
+
+  useEffect(()=>{
+    if(activeUser!=null){
+       checkFriend(activeUser.friendId)
+    }
+   
+  },[activeUser])
+
+
+  
+  
   useEffect(() => {
     if (!messageEndRef.current) return;
     messageEndRef.current.scrollTop =
@@ -278,10 +461,25 @@ function MessageSection() {
   return (
     <div className="msg-wrapper">
       {showBox&&<BlockReason onClose={()=>{setShowBox(false)}} onConfirm={(reason)=>{blockUSer(reason);setShowBox(false)}}/>}
+        
       <div className="msg-left">
+        {!isCreateGroup&&<div>
+
         <div className="left-fixed">
-          <h2 className="msg-title">Messages</h2>
+          <div className="back-msg-holder">
+            <div className="back-arrow-msg" onClick={()=>{navigate("/home")}}><ArrowLeft size={24} color="white"/></div>
+            <h2 className="msg-title">Messages</h2>
+          </div>
+          
           <input type="search" className="msg-search" placeholder="Search messages..." />
+          <div onClick={()=>{setIsCreateGroup(true)}} className="group-btn-holder">
+            <button className="create-group-btn" >
+            <Users size={18} className="icon" />
+            <span>Create Group</span>
+            <span className="plus">+</span>
+          </button>
+          </div>
+          
         </div>
 
         <div className="left-scroll">
@@ -289,6 +487,10 @@ function MessageSection() {
             <div
               key={i}
               className={`conversation ${c.active ? "active" : ""}`}
+               onMouseDown={() => handleMouseDown(c)}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+
               onClick={() => {
                 if (c.conversationId === conversationId) return;
 
@@ -297,6 +499,8 @@ function MessageSection() {
                 setMessages([]);
                 setCursorTime(null);
                 hasMoreRef.current = true;
+                setActiveUser(c);
+                checkFriend(c.friendId);
                 fetchMessage(c.conversationId, new Date());
               }}
             >
@@ -317,43 +521,94 @@ function MessageSection() {
               <div className="conv-meta">
                 <span>{formatMessageTime(c.updatedAt)}</span>
               </div>
-            </div>
+            </div> 
           ))}
         </div>
-      </div>
+      </div>} 
+      {isCreateGroup&&
+      <div>
 
-      {activeUser&&<div className="msg-right">
+        <div className="group-name-container">
+          <label>Group Name</label>
+          <input
+            type="text"
+            className="group-name-input"
+            placeholder="Enter group name..."
+            value={groupName}
+            onChange={(e)=>{setGroupName(e.target.value)}}
+          />
+        </div>
+       <div className="group-action-buttons">
+          <button className="btn btn-create" onClick={()=>{addGroupConversation()}}>Create</button>
+          <button className="btn btn-cancel" onClick={()=>{setIsCreateGroup(false)}}>Cancel</button>
+        </div>
+        {conversations.map((c, i) => (
+          <div
+            key={i}
+            className={`conversation ${c.active ? "active" : ""}`}
+          >
+            <div className="avatar">
+              {c.friendProfilePic && (
+                <img src={c.friendProfilePic} style={{ width: "100%" }} alt="" />
+              )}
+              {activeUsers[c.friendId] && <span className="online-dot"></span>}
+            </div>
+
+            <div className="conv-info">
+              <div className="conv-name">{c.friendName}</div>
+              <div className="conv-text">
+                {c.lastMessageSender == user._id ? "you: " : ""} {c.lastMessage}
+              </div>
+            </div>
+
+            <div className="conv-meta">
+              <input
+                className="friend-checkbox"
+                type="checkbox"
+                checked={selectedFriends.includes(c.friendId)}
+                onChange={() => handleCheckboxChange(c.friendId)}
+              />
+            </div>
+          </div>
+        ))}
+
+      
+      </div>
+      }
+      </div>
+      {/*  */}
+
+      {activeUser&&!isGroupUpdate&&<div className="msg-right">
         <div className="right-fixed-top">
           <div className="chat-user">
             <div className="chat-user-inner">
               <div className="avatar large"></div>
               <div>
-                {activeUser && <div className="chat-name">{activeUser.fullName}</div>}
-                {activeUsers[activeUser._id]&&<div className="chat-status">Active now</div>}
+                {activeUser && <div className="chat-name">{!activeUser.isGroup&&<Link to={`/home/profile/${activeUser.friendUserName}`} className="nav-link">{activeUser.friendName}</Link>}{activeUser.isGroup&&<div onClick={()=>{setGroupUpdate(true)}}>{activeUser.friendName}</div>}</div>}
+                {activeUsers[activeUser.friendId]&&<div className="chat-status">Active now</div>}
               </div>
             </div>
             <div className="chat-actions">
-              <div><Phone size={20} /></div>
-              <div><Video size={20} /></div>
+              
+              <div><Video size={20} onClick={()=>{videoCall()}} /></div>
               <div><Info size={20} onClick={()=>{if(close){setFeatureDesign({transform:"scaleY(1)"})}else{setFeatureDesign({transform:"scaleY(0)"})}}} /></div>
+              <div><ArrowLeft onClick={()=>{navigate("/home")}} size={20} /></div>
             </div>
-            <div className="feature-overlay" style={featureDesign} ref={overlayRef} >
+            {!isBlocked&&<div className="feature-overlay" style={featureDesign} ref={overlayRef} >
               <button onClick={()=>{setShowBox(true)}} className="overlay-item block">
                 <Ban size={18} />
                 <span>Block</span>
               </button>
-
-              <button className="overlay-item">
+              {!isCloseFriend&&<button onClick={()=>{addCloseFriend(activeUser.friendId)}} className="overlay-item">
                 <Star size={18} />
                 <span>Close Friend</span>
-              </button>
+              </button>}
+              {isCloseFriend&&<button onClick={()=>{removeCloseFriend(activeUser.friendId)}} className="overlay-item">
+                <Star size={18} />
+                <span>remove Close Friend</span>
+              </button>}
 
-              <button className="overlay-item">
-                <Shield size={18} />
-                <span>Restrict</span>
-              </button>
-
-            </div>
+            </div>}
           </div>
         </div>
 
@@ -385,6 +640,20 @@ function MessageSection() {
               Unblock
             </button>
           </div>}
+           {isAmBlocked&&<div className="blocked-box">
+            <Ban size={18} />
+
+            <div className="blocked-text">
+              <h4>User blocked You</h4>
+              <p>
+                User have blocked you.  
+                You won’t see their content or receive messages.
+              </p>
+            </div>
+
+           
+          </div>}
+          
           {iBlocked&&<div className="blocked-box">
             <Ban size={18} />
 
@@ -399,18 +668,22 @@ function MessageSection() {
 
           }
           
-          {!isBlocked&&!iBlocked&&<div className="send-msg">
+          {!isBlocked&&!isAmBlocked&&<div className="send-msg">
             <input
               value={currMsg}
               onChange={(e) => setCurrMsg(e.target.value)}
               placeholder="Type a message..."
             />
-            <div className="send-holder" onClick={sendMsg}>
+            <div className="send-holder" onClick={()=>sendMsg()}>
+              
               <Send size={22} />
             </div>
           </div>}
         </div>
-      </div>}
+      </div>} 
+      {activeUser&&isGroupUpdate&&<GroupInfo setGroupUpdate={setGroupUpdate} convoId={activeUser.conversationId}/>}
+
+      {/* >>>>>>>>>>>>>>>>>>>>>>>>> */}
       {!activeUser&&<div className="empty-chat-container">
         <div className="icon-wrappers">
             <div className="sparkle"></div>

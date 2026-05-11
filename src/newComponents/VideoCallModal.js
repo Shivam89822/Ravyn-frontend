@@ -1,0 +1,136 @@
+import React, { useEffect, useRef } from "react";
+import { PhoneOff, Video } from "lucide-react";
+import useCall from "../hooks/useCall";
+import "./VideoCallModal.css";
+
+function VideoCallModal() {
+  const {
+    callState,
+    acceptIncomingCall,
+    rejectIncomingCall,
+    endCall,
+  } = useCall();
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
+
+  useEffect(() => {
+    if (localVideoRef.current) {
+      localVideoRef.current.srcObject = callState.localStream || null;
+    }
+
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = callState.remoteStream || null;
+    }
+  }, [callState.localStream, callState.remoteStream]);
+
+  if (callState.status === "idle" && !callState.error) return null;
+
+  const isIncoming = callState.status === "incoming";
+  const showFullModal =
+    callState.status === "outgoing" ||
+    callState.status === "connecting" ||
+    callState.status === "in-call";
+
+  return (
+    <>
+      {isIncoming && (
+        <div className="call-popup-overlay">
+          <div className="call-popup-card">
+            <div className="call-popup-avatar">
+              {callState.remoteUser?.profilePictureUrl ? (
+                <img src={callState.remoteUser.profilePictureUrl} alt="" />
+              ) : (
+                <div className="call-popup-fallback">
+                  {callState.remoteUser?.fullName?.charAt(0) || "U"}
+                </div>
+              )}
+            </div>
+            <h3>{callState.remoteUser?.fullName || "Incoming call"}</h3>
+            <p>Incoming video call</p>
+            <div className="call-popup-actions">
+              <button className="decline-btn" onClick={rejectIncomingCall}>
+                Decline
+              </button>
+              <button className="accept-btn" onClick={acceptIncomingCall}>
+                Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showFullModal && (
+        <div className="video-call-overlay">
+          <div className="video-call-card">
+            <div className="video-call-header">
+              <div>
+                <h3>{callState.remoteUser?.fullName || "Video Call"}</h3>
+                <p>
+                  {callState.status === "outgoing" && "Ringing..."}
+                  {callState.status === "connecting" && "Connecting..."}
+                  {callState.status === "in-call" && "Live now"}
+                </p>
+              </div>
+              <div className="live-chip">
+                <Video size={16} />
+                Video
+              </div>
+            </div>
+
+            <div className="video-stage">
+              <video
+                ref={remoteVideoRef}
+                className="remote-video"
+                autoPlay
+                playsInline
+                controls={false}
+              />
+
+              {!callState.remoteStream && (
+                <div className="video-placeholder">
+                  <div className="video-placeholder-avatar">
+                    {callState.remoteUser?.profilePictureUrl ? (
+                      <img src={callState.remoteUser.profilePictureUrl} alt="" />
+                    ) : (
+                      <span>{callState.remoteUser?.fullName?.charAt(0) || "U"}</span>
+                    )}
+                  </div>
+                  <span>{callState.remoteUser?.fullName || "Waiting for user"}</span>
+                </div>
+              )}
+
+              <video
+                ref={localVideoRef}
+                className="local-video"
+                autoPlay
+                playsInline
+                muted
+              />
+
+              <button className="floating-end-call-btn" onClick={endCall}>
+                <PhoneOff size={18} />
+                End Call
+              </button>
+            </div>
+
+            <div className="video-call-actions">
+              <button className="end-call-btn" onClick={endCall}>
+                <PhoneOff size={18} />
+                End Call
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {callState.error && (
+        <div className="call-toast">
+          <span>{callState.error}</span>
+          <button onClick={() => endCall()}>Close</button>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default VideoCallModal;

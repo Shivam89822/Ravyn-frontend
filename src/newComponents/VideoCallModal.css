@@ -1,0 +1,233 @@
+.call-popup-overlay,
+.video-call-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(9, 14, 23, 0.62);
+  backdrop-filter: blur(10px);
+}
+
+.call-popup-card,
+.video-call-card {
+  width: min(92vw, 420px);
+  border-radius: 28px;
+  background: linear-gradient(160deg, #101926 0%, #172336 100%);
+  color: #f5f7fb;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+}
+
+.call-popup-card {
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.call-popup-avatar,
+.call-popup-fallback {
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.call-popup-avatar img,
+.video-placeholder-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.call-popup-fallback,
+.video-placeholder-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.call-popup-card h3,
+.video-call-header h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.call-popup-card p,
+.video-call-header p,
+.video-placeholder span {
+  margin: 8px 0 0;
+  color: #b9c6da;
+}
+
+.call-popup-actions,
+.video-call-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.call-popup-actions button,
+.video-call-actions button,
+.call-toast button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.decline-btn,
+.end-call-btn {
+  background: #ff5b6e;
+  color: #fff;
+}
+
+.accept-btn {
+  background: #31c48d;
+  color: #072d20;
+}
+
+.video-call-card {
+  width: min(94vw, 920px);
+  padding: 20px;
+}
+
+.video-call-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.video-stage {
+  position: relative;
+  min-height: 58vh;
+  border-radius: 24px;
+  overflow: hidden;
+  background: radial-gradient(circle at top, #21314b 0%, #0a1019 70%);
+}
+
+.remote-video,
+.local-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #08111b;
+}
+
+.remote-video {
+  min-height: 58vh;
+}
+
+.local-video {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: min(28vw, 220px);
+  height: min(20vw, 160px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.video-placeholder-avatar {
+  width: 94px;
+  height: 94px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.floating-end-call-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: rgba(255, 91, 110, 0.95);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+.call-toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 360px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #0f1724;
+  color: #f5f7fb;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+.call-toast button {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .video-call-card {
+    padding: 14px;
+  }
+
+  .video-stage,
+  .remote-video {
+    min-height: 70vh;
+  }
+
+  .local-video {
+    width: 120px;
+    height: 170px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .floating-end-call-btn {
+    bottom: 12px;
+  }
+
+  .video-call-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

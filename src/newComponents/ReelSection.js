@@ -4,6 +4,7 @@ import ReelItem from './ReelItem'
 import { useSelector } from "react-redux";
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import api from "../utils/axios.js";
 function ReelSection() {
     const [reels,setReels]=useState([]);
     const [cursorTime,setCursorTime]=useState(null)
@@ -15,7 +16,7 @@ function ReelSection() {
 
 const fetchReel=async()=>{
     try{
-        const response = await axios.get("http://localhost:8080/api/reels", {
+        const response = await api.get("/api/post/reels", {
         params: { userId: user?._id, cursorTime }
       });
         const {hasMore:hasMore,nextCursorTime:nextCursorTime,reels:reels}= response.data
@@ -47,7 +48,7 @@ const fetchReel=async()=>{
 
 const fetchOnePost=async()=>{
   try{
-    const response=await axios.get("http://localhost:8080/api/post/fetchone",{params:{reelId:reelId}})
+    const response=await api.get("/api/post/fetchone",{params:{reelId:reelId}})
     setReels([response.data]);
     setHasMore(true);    
   }catch(e){

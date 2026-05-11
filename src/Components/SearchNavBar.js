@@ -5,12 +5,22 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import debounce from "lodash.debounce";
-
+import api from "../utils/axios.js";
 function SearchNavBar() {
+ 
   const user = useSelector((state) => state.user.user);
   const [suggestedPlayer, setSuggestedPlayer] = useState([]);
   const navigate = useNavigate()
   const [currSearch, setCurrSearch] = useState("")
+  const handleLogout=async()=>{
+    try{
+      await api.post('/api/user/log-out');
+      navigate('/')
+    }catch(e){
+      console.log(e);
+    }
+  }
+  
 
   const debouncedSearch = useCallback(
     debounce(async (val) => {
@@ -20,8 +30,8 @@ function SearchNavBar() {
       }
 
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/user/fetchuser",
+        const response = await api.get(
+          "/api/user/fetchuser",
           {
             params: { data: val, userId: user?._id }
           }
@@ -72,6 +82,11 @@ function SearchNavBar() {
             ))}
           </div>
         )}
+      </div>
+      <button class="logout-btn" onClick={()=>{handleLogout()}}>Logout</button>
+      <div className="notification-bell" onClick={()=>{navigate("/home/noticications")}}>
+        <Bell size={20} color="white" />
+        <span className="notification-badge">3</span>
       </div>
     </nav>
   );

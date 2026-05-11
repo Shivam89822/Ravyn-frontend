@@ -7,7 +7,7 @@ import { setUser, clearUser, updateUser } from '../features/user/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess, logout, authChecked } from '../features/user/AuthSlice';
-
+import api from "../utils/axios.js";
 
 emailjs.init('ctXygJkKLayqZOPO9');
 function Login(props) {
@@ -24,15 +24,21 @@ const dispatch=useDispatch();
 
   const onSubmit = async(data) =>{
     try{
-      const response=await axios.post("http://localhost:8080/api/auth/login",{
+      console.log("[login] submit", {
+        email: data.email,
+        apiBaseUrl: api.defaults.baseURL,
+      });
+      const response=await api.post("/api/auth/login",{
         user:data
+      },{
+        withCredentials:true
       })
       if(!response){
         alert("Response not recived")
       }
       const user=response.data.user
-      const token =response.data.token 
-      localStorage.setItem('token',token)
+      // const token =response.data.token 
+      // localStorage.setItem('token',token)
       user['isVerified']=true;
       dispatch(setUser(user))
       dispatch(loginSuccess())
@@ -40,6 +46,12 @@ const dispatch=useDispatch();
       console.log(" All done ✅")
     }
     catch(e){
+      console.error("[login] failed", {
+        email: data.email,
+        apiBaseUrl: api.defaults.baseURL,
+        status: e.response?.status || null,
+        message: e.response?.data?.error || e.message,
+      });
       const msg=e.response?.data?.error||"Internal server error"
       alert(msg)
     }

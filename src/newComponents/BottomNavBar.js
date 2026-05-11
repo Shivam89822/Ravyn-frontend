@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Home, Search, PlusSquare, Bell, User } from "lucide-react";
 import "./BottomNavBar.css";
-
+import api from "../utils/axios.js";
 function BottomNavBar() {
   return (
     <nav className="bottom-nav">

@@ -6,12 +6,10 @@ const ProtectedRoute = () => {
     (state) => state.auth
   );
 
-  
   if (!isAuthChecked) {
-    return null;
+    return <div>Loading...</div>; // or spinner
   }
 
- 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }

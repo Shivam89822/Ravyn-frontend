@@ -12,9 +12,12 @@ import {
 import {
   loginSuccess,
   logout,
+  authChecked
 } from "./features/user/AuthSlice";
 
 import "./App.css";
+import api from "./utils/axios.js";
+
 import Intropage from "./Components/Intropage";
 import BasePage from "./Components/BasePage";
 import UserProfile from "./Components/UserProfile";
@@ -23,7 +26,7 @@ import Feed from "./Components/Feed";
 import MessageSection from "./newComponents/MessageSection";
 import VeiwProfile from "./newComponents/VeiwProfile";
 import ProtectedRoute from "./ProtectedRoute";
-
+import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import socket from "./Socket";
 import EditProfile from "./newComponents/EditProfile";
@@ -31,53 +34,54 @@ import SearchTab from "./newComponents/SearchTab";
 import PreviewStatus from "./newComponents/PreviewStatus";
 import StatusElement from "./newComponents/StatusElement";
 import Setting from "./newComponents/SettingsPage";
+import Notifications from "./newComponents/Notifications";
+import { CallProvider } from "./context/CallContext";
+import VideoCallModal from "./newComponents/VideoCallModal";
 
 
 function App() {
+
   const dispatch = useDispatch();
   const { isAuthenticated, isAuthChecked } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user.user);
   const conversations = useSelector((state) => state.conversations.conversations);
 
   const conversationsRef = useRef([]);
+  const onlineUsersRef = useRef(new Set());
   conversationsRef.current = conversations;
 
   const fetchConversation = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/fetchConversation",
+      const response = await api.get(
+        "/api/conversation/fetchConversation",
         { params: { userId: user._id } }
       );
+      console.log(response.data);
       dispatch(setConversations(response.data));
     } catch {}
   };
 
+
   useEffect(() => {
     const verifyUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        dispatch(clearUser());
-        dispatch(logout());
-        return;
-      }
+      
 
       try {
-        const res = await axios.post(
-          "http://localhost:8080/api/auth/verify",
-          {},
-          { headers: { authorization: `Bearer ${token}` } }
-        );
+        const res = await api.post("/api/auth/verify");
         dispatch(setUser(res.data.user));
         dispatch(loginSuccess());
+       
       } catch {
-        localStorage.removeItem("token");
         dispatch(clearUser());
         dispatch(logout());
+    
+      } finally {
+        dispatch(authChecked()); // ✅ fixed
       }
     };
 
-    if (!isAuthChecked) verifyUser();
-  }, [dispatch, isAuthChecked]);
+    verifyUser(); // ✅ always run
+  }, [dispatch]);
 
   useEffect(() => {
     if (!isAuthChecked) return;
@@ -102,6 +106,12 @@ function App() {
 
   useEffect(() => {
     const handlePresence = ({ userId, status }) => {
+      if (status === "online") {
+        onlineUsersRef.current.add(userId);
+      } else {
+        onlineUsersRef.current.delete(userId);
+      }
+
       const exists = conversationsRef.current.some(
         (c) => c.friendId === userId
       );
@@ -115,8 +125,11 @@ function App() {
     return () => socket.off("presence-update", handlePresence);
   }, [dispatch]);
 
+
   useEffect(() => {
     const handleInit = (userIds) => {
+      onlineUsersRef.current = new Set(userIds);
+
       userIds.forEach((id) => {
         const exists = conversationsRef.current.some(
           (c) => c.friendId === id
@@ -129,30 +142,52 @@ function App() {
     return () => socket.off("presence-init", handleInit);
   }, [dispatch]);
 
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Intropage />} />
+  useEffect(() => {
+    if (!conversations.length) return;
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/home" element={<BasePage />}>
-            <Route index element={<Feed />} />
-            <Route path="messages" element={<MessageSection />} />
-            <Route path="user-profile" element={<VeiwProfile />} />
-            <Route path="user-profile/edit-profile" element={<EditProfile />} />
-            <Route path="profile/:username" element={<UserProfile />} />
-            <Route path="reels" element={<ReelSection />} />
-            <Route path="search" element={<SearchTab />} />
-            <Route path="status" element={<PreviewStatus />} />
-            <Route path="settings" element={<Setting/>}/>
+    conversations.forEach((conversation) => {
+      if (onlineUsersRef.current.has(conversation.friendId)) {
+        dispatch(userOnline(conversation.friendId));
+      } else {
+        dispatch(userOffline(conversation.friendId));
+      }
+    });
+  }, [conversations, dispatch]);
+
+  return (
+    <CallProvider user={user} conversations={conversations}>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? <Navigate to="/home" replace /> : <Intropage />
+            }
+          />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/home" element={<BasePage />}>
+              <Route index element={<Feed />} />
+              <Route path="messages" element={<MessageSection />} />
+              <Route path="user-profile" element={<VeiwProfile />} />
+              <Route path="user-profile/edit-profile" element={<EditProfile />} />
+              <Route path="profile/:username" element={<UserProfile />} />
+              <Route path="reels" element={<ReelSection />} />
+              <Route path="search" element={<SearchTab />} />
+              <Route path="status" element={<PreviewStatus />} />
+              <Route path="settings" element={<Setting/>}/>
+              <Route path="noticications" element={<Notifications/>}/>
+
+            </Route>
+
+            <Route path="/status/:username" element={<StatusElement />} />
           </Route>
 
-          <Route path="/status/:username" element={<StatusElement />} />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <VideoCallModal />
+      </Router>
+    </CallProvider>
   );
 }
 

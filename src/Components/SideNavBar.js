@@ -16,7 +16,7 @@ import FeedLoader from "./FeedLoader"
 import { Heart, Users, UserPlus, X ,User} from 'lucide-react';
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import api from "../utils/axios.js";
 
 function SideNavBar({ onCreatePost }) {
   const [style,setStyle]=useState({
@@ -30,7 +30,7 @@ function SideNavBar({ onCreatePost }) {
   
   const acceptFollowRequest=async(followerId,notifyId)=>{
     try{
-      await axios.post("http://localhost:8080/api/follow/acceptreq",{
+      await api.post("/api/follow/acceptreq",{
         followerId:followerId,
         followingId:user._id,
         notifyId:notifyId,
@@ -41,15 +41,27 @@ function SideNavBar({ onCreatePost }) {
     }
   }
 
+   const rejectFollowRequest = async (notifyId) => {
+      try {
+        await api.post(
+          "/api/follow/rejectreq",
+          { notifyId:notifyId }
+        );
+        fetchNotification();
+      } catch (e) {
+        console.log(e.response?.data?.message || "Backend error");
+      } 
+    };
+
   const fetchNotification=async()=>{
     try{
-      const response= await axios.get("http://localhost:8080/api/notification/fetch",{
+      const response= await api.get("/api/notification/fetch",{
         params:{
           userId:user._id
         }
       })
       setNotifyItem(response.data.data);
-      console.log(response.data.data)
+
       
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
@@ -58,7 +70,7 @@ function SideNavBar({ onCreatePost }) {
 
   const fetchUser=async(userId)=>{
     try{
-      const user=await axios.get(`http://localhost:8080/api/singleuser/${userId}`);
+      const user=await api.get(`/api/user/singleuser/${userId}`);
       return user.data;
     }
     catch(e){
@@ -148,7 +160,7 @@ function SideNavBar({ onCreatePost }) {
                 sent you a follow request
               </div>
               <div className="last-notify-div">
-                <button className="notify-btn blue" onClick={()=>{acceptFollowRequest(item.actor._id,item._id)}}>Accept</button><button className="notify-btn gray">Decline</button>
+                <button className="notify-btn blue" onClick={()=>{acceptFollowRequest(item.actor._id,item._id)}}>Accept</button><button className="notify-btn gray" onClick={()=>{rejectFollowRequest(item._id)}}>Decline</button>
               </div>
             </div>}
             
@@ -230,6 +242,7 @@ function SideNavBar({ onCreatePost }) {
             </div>}
         </div>}          
       </div>
+      {/*  */}
 
       <div className="logo">Ravyn</div>
 
@@ -288,7 +301,7 @@ function SideNavBar({ onCreatePost }) {
         <span className="nav-text-holder">Create Post</span>
       </div>
 
-      <NavLink
+      {/* <NavLink
         to="/home/saved"
         className={({ isActive }) =>
           isActive ? "nav-item active" : "nav-item"
@@ -296,7 +309,7 @@ function SideNavBar({ onCreatePost }) {
       >
         <span className="icon-holder"><Bookmark size={32} /></span>
         <span className="nav-text-holder">Saved</span>
-      </NavLink>
+      </NavLink> */}
 
       <NavLink
         to="/home/settings"
