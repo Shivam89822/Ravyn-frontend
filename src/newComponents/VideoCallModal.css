@@ -207,6 +207,21 @@
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
 }
 
+.desktop-call-actions {
+  margin-top: 16px;
+}
+
+.desktop-call-actions .end-call-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 20px;
+}
+
+.mobile-only-call-action {
+  display: none;
+}
+
 .call-toast {
   position: fixed;
   right: 20px;
@@ -254,6 +269,14 @@
     top: 12px;
     bottom: auto;
     border-radius: 16px;
+  }
+
+  .desktop-call-actions {
+    display: none;
+  }
+
+  .mobile-only-call-action {
+    display: inline-flex;
   }
 
   .floating-end-call-btn {

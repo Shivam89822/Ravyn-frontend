@@ -132,7 +132,17 @@ function VideoCallModal() {
                 }}
               />
 
-              <button className="floating-end-call-btn" onClick={endCall}>
+              <button
+                className="floating-end-call-btn mobile-only-call-action"
+                onClick={endCall}
+              >
+                <PhoneOff size={18} />
+                End Call
+              </button>
+            </div>
+
+            <div className="video-call-actions desktop-call-actions">
+              <button className="end-call-btn" onClick={endCall}>
                 <PhoneOff size={18} />
                 End Call
               </button>
