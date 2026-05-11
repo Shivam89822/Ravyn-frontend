@@ -12,6 +12,7 @@ function VideoCallModal() {
   } = useCall();
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
+  const remoteAudioRef = useRef(null);
 
   useEffect(() => {
     if (localVideoRef.current) {
@@ -27,6 +28,17 @@ function VideoCallModal() {
       remoteVideoRef.current.srcObject = callState.remoteStream || null;
       if (callState.remoteStream) {
         remoteVideoRef.current
+          .play()
+          .catch(() => {});
+      }
+    }
+
+    if (remoteAudioRef.current) {
+      remoteAudioRef.current.srcObject = callState.remoteStream || null;
+      remoteAudioRef.current.muted = false;
+      remoteAudioRef.current.volume = 1;
+      if (callState.remoteStream) {
+        remoteAudioRef.current
           .play()
           .catch(() => {});
       }
@@ -49,6 +61,12 @@ function VideoCallModal() {
 
   return (
     <>
+      <audio
+        ref={remoteAudioRef}
+        autoPlay
+        playsInline
+      />
+
       {isIncoming && (
         <div className="call-popup-overlay">
           <div className="call-popup-card">
