@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 import "./Feed.css";
 import PostCard from "./PostCard";
 import FeedLoader from "./FeedLoader";
@@ -27,7 +26,6 @@ function Feed() {
   const navigate=useNavigate();
   const [viralCursor, setViralCursor] = useState(null);
   const [hasMoreViral,setHasMoreViral]=useState(true);
-  const [userStatus,setUserStatus]=useState([]);
   const [suggestion,setSuggestion]=useState([]);
   
 
@@ -39,7 +37,7 @@ function Feed() {
     statusFileRef.current.click();
   }
 
-const fetchSuggestions = async () => {
+const fetchSuggestions = useCallback(async () => {
   try {
     const response = await api.get(
       "/api/user/friend-suggestions",
@@ -52,38 +50,18 @@ const fetchSuggestions = async () => {
   } catch (e) {
     console.log(e.response?.data?.message || "Error fetching suggestions");
   }
-};
+}, [user?._id]);
 
-
-  const fetchUnFollowed=async()=>{
+  const fetchStatus = useCallback(async () => {
     try{
-      const response =await api.get("",{
-        params:{userId:user._id}
-      })
-    }
-    catch(e){
-      console.log(e.response?.data?.message||"Backend error")
-    }
-  }
-
-  const fetchStatus=async(req,res)=>{
-    try{
-      const response =await api.get("/api/status/get",{
+      const response = await api.get("/api/status/get",{
         params:{userId:user._id}
       });
-    setStatus(response.data);
-    const data=response.data;
-    data.forEach(element => {
-      if(element.user._id==user._id){
-        setUserStatus(prev=>[...prev,element]);
-        console.log("found")
-      }
-    });
-   
+      setStatus(response.data);
     }catch(e){
       console.log(e.response?.data?.message||"Backend error");
     }
-  }
+  }, [user?._id]);
 
   useEffect(() => {
   if (currPost) {
@@ -93,12 +71,9 @@ const fetchSuggestions = async () => {
   }
 
   return () => dispatch(showBottomNav());
-}, [currPost]);
+}, [currPost, dispatch]);
 
-
-
-
-  const fetchFeed = async () => {
+  const fetchFeed = useCallback(async () => {
     if (!user || loader || !hasMore) return; 
 
     setLoader(true);
@@ -134,7 +109,7 @@ const fetchSuggestions = async () => {
     } finally {
       setLoader(false);
     }
-  };
+  }, [cursorTime, hasMore, loader, user]);
 
   const followUser=async(userName)=>{
     try{
@@ -148,7 +123,7 @@ const fetchSuggestions = async () => {
     }
   }
 
-  const fetchViralFeed=async()=>{
+  const fetchViralFeed = useCallback(async () => {
     if (!user || loader || !hasMoreViral) return; 
 
     setLoader(true);
@@ -172,7 +147,7 @@ const fetchSuggestions = async () => {
     }finally{
       setLoader(false)
     }
-  }
+  }, [hasMoreViral, loader, user, viralCursor]);
 
   useEffect(() => {
     if (user) {
@@ -183,7 +158,7 @@ const fetchSuggestions = async () => {
       fetchStatus();
       fetchSuggestions();
     }
-  }, [user]);
+  }, [user, fetchFeed, fetchStatus, fetchSuggestions]);
 
  useEffect(() => {
   if (!bottomRef.current || !user) return;
@@ -212,7 +187,7 @@ const fetchSuggestions = async () => {
   observerRef.current.observe(bottomRef.current);
 
   return () => observerRef.current?.disconnect();
-}, [user, hasMore, hasMoreViral, loader]);
+}, [user, hasMore, hasMoreViral, loader, fetchFeed, fetchViralFeed]);
 
 
   return (
@@ -234,9 +209,9 @@ const fetchSuggestions = async () => {
                 }
               }} ref={statusFileRef} name="" id="" />
 
-          {status.map((item,key)=>(
-          <div onClick={()=>{navigate(`/status/${item.user.userName}`)}}>
-            <div className="status-item-box">{item.user.profilePictureUrl&&<img style={{width:"100%",height:"100%",borderRadius:"50%"}} src={item.user.profilePictureUrl}/>}</div>
+          {status.map((item)=>(
+          <div key={item._id || item.user.userName} onClick={()=>{navigate(`/status/${item.user.userName}`)}}>
+            <div className="status-item-box">{item.user.profilePictureUrl&&<img style={{width:"100%",height:"100%",borderRadius:"50%"}} src={item.user.profilePictureUrl} alt={`${item.user.userName} story`} />}</div>
             <div className="story-name">{item.user.userName}</div>
           </div>
           ))}
@@ -266,8 +241,8 @@ const fetchSuggestions = async () => {
 
         <div className="suggestion-box">
           <div className="suggest-message">SUGGESTED FOR YOU</div>
-          {suggestion.map((item,key)=>(
-              <div className="follow-suggestion-item"> 
+          {suggestion.map((item)=>(
+              <div key={item._id || item.userName} className="follow-suggestion-item"> 
               <div className="prof-holder-circle">{item.profilePictureUrl.length>0&&<img style={{height:'100%',width:'100%',borderRadius:"50%"}} src={item.profilePictureUrl} alt="" />}</div>
               <div>
                 <div>{item.fullName}</div>
