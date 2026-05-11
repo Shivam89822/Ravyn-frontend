@@ -16,10 +16,20 @@ function VideoCallModal() {
   useEffect(() => {
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = callState.localStream || null;
+      if (callState.localStream) {
+        localVideoRef.current
+          .play()
+          .catch(() => {});
+      }
     }
 
     if (remoteVideoRef.current) {
       remoteVideoRef.current.srcObject = callState.remoteStream || null;
+      if (callState.remoteStream) {
+        remoteVideoRef.current
+          .play()
+          .catch(() => {});
+      }
     }
   }, [callState.localStream, callState.remoteStream]);
 
@@ -30,6 +40,12 @@ function VideoCallModal() {
     callState.status === "outgoing" ||
     callState.status === "connecting" ||
     callState.status === "in-call";
+  const hasRemoteVideo = Boolean(
+    callState.remoteStream?.getVideoTracks?.().length
+  );
+  const hasRemoteAudio = Boolean(
+    callState.remoteStream?.getAudioTracks?.().length
+  );
 
   return (
     <>
@@ -84,9 +100,12 @@ function VideoCallModal() {
                 autoPlay
                 playsInline
                 controls={false}
+                onLoadedMetadata={(event) => {
+                  event.currentTarget.play().catch(() => {});
+                }}
               />
 
-              {!callState.remoteStream && (
+              {!hasRemoteVideo && (
                 <div className="video-placeholder">
                   <div className="video-placeholder-avatar">
                     {callState.remoteUser?.profilePictureUrl ? (
@@ -95,7 +114,10 @@ function VideoCallModal() {
                       <span>{callState.remoteUser?.fullName?.charAt(0) || "U"}</span>
                     )}
                   </div>
-                  <span>{callState.remoteUser?.fullName || "Waiting for user"}</span>
+                      <span>{callState.remoteUser?.fullName || "Waiting for user"}</span>
+                      {hasRemoteAudio && (
+                        <small className="call-audio-badge">Audio connected</small>
+                      )}
                 </div>
               )}
 
@@ -105,16 +127,12 @@ function VideoCallModal() {
                 autoPlay
                 playsInline
                 muted
+                onLoadedMetadata={(event) => {
+                  event.currentTarget.play().catch(() => {});
+                }}
               />
 
               <button className="floating-end-call-btn" onClick={endCall}>
-                <PhoneOff size={18} />
-                End Call
-              </button>
-            </div>
-
-            <div className="video-call-actions">
-              <button className="end-call-btn" onClick={endCall}>
                 <PhoneOff size={18} />
                 End Call
               </button>

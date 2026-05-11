@@ -96,6 +96,9 @@
 .video-call-card {
   width: min(94vw, 920px);
   padding: 20px;
+  max-height: min(92vh, 900px);
+  display: flex;
+  flex-direction: column;
 }
 
 .video-call-header {
@@ -117,6 +120,7 @@
 
 .video-stage {
   position: relative;
+  flex: 1;
   min-height: 58vh;
   border-radius: 24px;
   overflow: hidden;
@@ -132,6 +136,7 @@
 }
 
 .remote-video {
+  display: block;
   min-height: 58vh;
 }
 
@@ -139,11 +144,13 @@
   position: absolute;
   right: 18px;
   bottom: 18px;
-  width: min(28vw, 220px);
-  height: min(20vw, 160px);
+  z-index: 2;
+  width: min(24vw, 210px);
+  height: min(34vw, 260px);
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+  background: #08111b;
 }
 
 .video-placeholder {
@@ -154,6 +161,9 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
+  z-index: 1;
+  text-align: center;
+  padding: 24px;
 }
 
 .video-placeholder-avatar {
@@ -162,6 +172,19 @@
   border-radius: 50%;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.12);
+}
+
+.call-audio-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(49, 196, 141, 0.16);
+  color: #9ce7c7;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .floating-end-call-btn {
@@ -206,28 +229,44 @@
 }
 
 @media (max-width: 768px) {
+  .video-call-overlay {
+    padding: 10px;
+    align-items: stretch;
+  }
+
   .video-call-card {
+    width: 100%;
+    max-height: none;
+    min-height: 100%;
+    border-radius: 24px;
     padding: 14px;
   }
 
   .video-stage,
   .remote-video {
-    min-height: 70vh;
+    min-height: 68vh;
   }
 
   .local-video {
-    width: 120px;
-    height: 170px;
+    width: 96px;
+    height: 144px;
     right: 12px;
-    bottom: 12px;
+    top: 12px;
+    bottom: auto;
+    border-radius: 16px;
   }
 
   .floating-end-call-btn {
     bottom: 12px;
+    padding: 11px 16px;
   }
 
   .video-call-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .live-chip {
+    align-self: flex-start;
   }
 }
