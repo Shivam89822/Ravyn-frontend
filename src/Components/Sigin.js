@@ -7,7 +7,7 @@ import axios from "axios";
 import { setUser, clearUser, updateUser } from '../features/user/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginSuccess, logout, authChecked } from '../features/user/AuthSlice';
+import { loginSuccess } from '../features/user/AuthSlice';
 import api from "../utils/axios.js";
 emailjs.init('ctXygJkKLayqZOPO9');
 
@@ -48,8 +48,9 @@ function Sigin(props) {
       // localStorage.setItem("token", token);
       console.log(user)
       dispatch(setUser(user))
-      dispatch(logout())
-      navigate('/Home')
+      dispatch(loginSuccess())
+      props.setCheckSigin(false)
+      navigate('/home', { replace: true })
       
            
     } catch (e) {

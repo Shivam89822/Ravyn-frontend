@@ -42,7 +42,7 @@ const dispatch=useDispatch();
       user['isVerified']=true;
       dispatch(setUser(user))
       dispatch(loginSuccess())
-      navigate('/Home');
+      navigate('/home', { replace: true });
       console.log(" All done ✅")
     }
     catch(e){
